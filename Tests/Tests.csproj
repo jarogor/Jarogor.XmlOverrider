@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>11</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0"/>
+        <PackageReference Include="xunit" Version="2.6.6"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\XmlOverrider\XmlOverrider.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content CopyToOutputDirectory="Always" Include=".\data\markup.test.xml"/>
+        <Content CopyToOutputDirectory="Always" Include=".\data\test.xml"/>
+        <Content CopyToOutputDirectory="Always" Include=".\data\override-a.xml"/>
+        <Content CopyToOutputDirectory="Always" Include=".\data\override-b.xml"/>
+        <Content CopyToOutputDirectory="Always" Include=".\data\override-c.xml"/>
+        <Content CopyToOutputDirectory="Always" Include=".\data\expected.xml"/>
+        <EmbeddedResource CopyToOutputDirectory="Always" Include="..\XmlOverrider\Scheme\Markup.xsd">
+            <Link>.\data\Markup.xsd</Link>
+        </EmbeddedResource>
+    </ItemGroup>
+
+</Project>

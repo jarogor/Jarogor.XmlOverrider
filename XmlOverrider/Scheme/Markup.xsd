@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="overrideMarkup">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Корневой узел</xsd:documentation>
+            <xsd:documentation xml:lang="en">Root node</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="node" type="nodeType" maxOccurs="unbounded" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="nodeType" mixed="true">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">
+                Обычный узел. Атрибуты:
+                 - `name` (обязательный) — Название элемента или атрибута.
+                 - `attributeIdName` (обязательный, если есть `override`) — Это имя атрибута, идентифицирующего узел.
+                 - `attributeIdValue` (обязательный, если есть `attributeIdName` и `override`) — Указание значения идентифицирующего атрибута для более строгого сравнения.
+                 - `override` — Указание типа замены: атрибуты (attributes) или всё внутреннее содержимое (innerXml).
+            </xsd:documentation>
+            <xsd:documentation xml:lang="en">
+                Regular node. Attributes:
+                 - `name` (required) - The name of the element or attribute.
+                 - `attributeIdName` (required if `override` is present) - This is the name of the attribute identifying the node.
+                 - `attributeIdValue` (required if `attributeIdName` and `override` are present) - Specifying the value of the identifying attribute for stricter comparison.
+                 - `override` — Specifies the type of replacement: attributes (attributes) or all internal content (innerXml).
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="node" type="nodeType" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="attribute" type="attrType" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="attributeIdName" type="xsd:string" use="optional"/>
+        <xsd:attribute name="attributeIdValue" type="xsd:string" use="optional"/>
+        <xsd:attribute name="override" type="override" use="optional" default="attributes"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="attrType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Элемент атрибута.</xsd:documentation>
+            <xsd:documentation xml:lang="en">Attribute element.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+    <xsd:simpleType name="override">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="attributes"/>
+            <xsd:enumeration value="innerXml"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

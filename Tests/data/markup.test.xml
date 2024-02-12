@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overrideMarkup
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="file:///..\..\..\XmlOverrider\XmlOverrider\Scheme\Markup.xsd">
+
+    <node name="section-a">
+        <!--
+         Переопределяет содержимое элемента 
+         сравнивая (идентифицируя) по содержимому атрибута "key"
+         и только для его значения "b".
+        -->
+        <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
+    </node>
+
+    <node name="section-b">
+        <!--
+         Переопределяет содержимое элемента 
+         сравнивая (идентифицируя) по содержимому атрибута "key".
+        -->
+        <node name="item" attributeIdName="key" override="innerXml"/>
+    </node>
+
+    <node name="section-c">
+        <!--
+         Переопределяет у элмента "item" значение атрибута "value"
+         сравнивая (идентифицируя) по содержимому атрибута "key".
+        -->
+        <node name="item" attributeIdName="key" override="attributes">
+            <attribute name="value"/>
+        </node>
+    </node>
+
+</overrideMarkup>
