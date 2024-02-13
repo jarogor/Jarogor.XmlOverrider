@@ -2,8 +2,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <Authors>Jarogor</Authors>
         <TargetFrameworks>net6.0;net462</TargetFrameworks>
         <LangVersion>11</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <OutputPath>$(SolutionDir)\bin\Release\</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
