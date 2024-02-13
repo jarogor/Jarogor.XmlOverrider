@@ -1,5 +1,7 @@
 using System.Xml;
+
 using XmlOverrider.Extensions;
+
 using Xunit;
 
 namespace XmlOverrider.Tests;

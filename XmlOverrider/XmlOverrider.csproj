@@ -10,11 +10,11 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
+        <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <OutputPath>$(SolutionDir)\bin\Release\</OutputPath>
+        <OutputPath>$(SolutionDir)\bin\Release\</OutputPath>
     </PropertyGroup>
 
 </Project>
