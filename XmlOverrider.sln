@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlOverrider", "XmlOverrider\XmlOverrider.csproj", "{0FBE131C-8CD5-47AB-9ADF-7AE25C048293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{FE1A20E3-2677-47E9-980C-5B0CB049BA51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlOverrider.Tests", "XmlOverrider.Tests\XmlOverrider.Tests.csproj", "{FE1A20E3-2677-47E9-980C-5B0CB049BA51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using XmlOverrider;
 using Xunit;
 
-namespace Tests;
+namespace XmlOverrider.Tests;
 
 public class OverrideTest
 {

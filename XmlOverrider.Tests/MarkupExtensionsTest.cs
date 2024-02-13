@@ -2,7 +2,7 @@ using System.Xml;
 using XmlOverrider.Extensions;
 using Xunit;
 
-namespace Tests;
+namespace XmlOverrider.Tests;
 
 public class MarkupExtensionsTest
 {
