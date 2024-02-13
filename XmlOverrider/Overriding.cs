@@ -29,11 +29,11 @@ public static class Overriding
                 continue;
             }
 
-            ProcessingChildNodes(markupChildNode, from, to);
+            ProcessingChilds(markupChildNode, from, to);
         }
     }
 
-    private static void ProcessingChildNodes(XmlElement markup, XmlNode from, XmlNode to)
+    private static void ProcessingChilds(XmlElement markup, XmlNode from, XmlNode to)
     {
         foreach (var fromChild in from.ChildNodes.OfType<XmlElement>())
         {
@@ -44,25 +44,30 @@ public static class Overriding
 
             foreach (var toChild in to.ChildNodes.OfType<XmlElement>())
             {
-                if (!IsElementNamesEquals(markup, fromChild, toChild))
-                {
-                    continue;
-                }
-
-                if (markup.IsOverridable() && IsAttributeIdsEquals(markup, fromChild, toChild))
-                {
-                    if (markup.IsOverrideInnerXml())
-                    {
-                        ReplaceChildren(to, fromChild, toChild);
-                        continue;
-                    }
-
-                    OverrideAttributes(markup, fromChild, toChild);
-                }
-
-                ProcessingRecursive(markup, fromChild, toChild);
+                ProcessingChild(markup, to, fromChild, toChild);
             }
         }
+    }
+
+    private static void ProcessingChild(XmlElement markup, XmlNode to, XmlElement fromChild, XmlElement toChild)
+    {
+        if (!IsElementNamesEquals(markup, fromChild, toChild))
+        {
+            return;
+        }
+
+        if (markup.IsOverridable() && IsAttributeIdsEquals(markup, fromChild, toChild))
+        {
+            if (markup.IsOverrideInnerXml())
+            {
+                ReplaceChildren(to, fromChild, toChild);
+                return;
+            }
+
+            OverrideAttributes(markup, fromChild, toChild);
+        }
+
+        ProcessingRecursive(markup, fromChild, toChild);
     }
 
     private static void ReplaceChildren(XmlNode parent, XmlNode newChild, XmlNode oldChild)
@@ -78,13 +83,7 @@ public static class Overriding
 
     private static void OverrideAttributes(XmlElement markup, XmlElement from, XmlElement to)
     {
-        var markupAttributeNames = markup.ChildNodes
-            .OfType<XmlElement>()
-            .Where(it => it.IsAttributeElement())
-            .Select(it => it.GetElementName())
-            .ToList();
-
-        foreach (var markupAttrName in markupAttributeNames)
+        foreach (var markupAttrName in MarkupAttributeNames(markup))
         {
             foreach (XmlAttribute overrideAttribute in from.Attributes)
             {
@@ -93,22 +92,35 @@ public static class Overriding
                     continue;
                 }
 
-                foreach (XmlAttribute targetAttribute in to.Attributes)
-                {
-                    if (targetAttribute.LocalName != overrideAttribute.LocalName)
-                    {
-                        continue;
-                    }
-
-                    if (targetAttribute.Value == overrideAttribute.Value)
-                    {
-                        continue;
-                    }
-
-                    targetAttribute.Value = overrideAttribute.Value;
-                }
+                OverrideAttribute(to, overrideAttribute);
             }
         }
+    }
+
+    private static void OverrideAttribute(XmlElement to, XmlAttribute overrideAttribute)
+    {
+        foreach (XmlAttribute targetAttribute in to.Attributes)
+        {
+            if (targetAttribute.LocalName != overrideAttribute.LocalName)
+            {
+                continue;
+            }
+
+            if (targetAttribute.Value == overrideAttribute.Value)
+            {
+                continue;
+            }
+
+            targetAttribute.Value = overrideAttribute.Value;
+        }
+    }
+
+    private static IEnumerable<string> MarkupAttributeNames(XmlNode markup)
+    {
+        return markup.ChildNodes
+            .OfType<XmlElement>()
+            .Where(it => it.IsAttributeElement())
+            .Select(it => it.GetElementName());
     }
 
     private static bool IsElementNamesEquals(XmlElement markup, XmlNode from, XmlNode to)
