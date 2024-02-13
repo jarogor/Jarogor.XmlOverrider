@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 
-using Xunit;
+using NUnit.Framework;
 
 namespace XmlOverrider.Tests;
 
@@ -23,13 +20,13 @@ public class OverrideTest
         Path.Combine(BasePath, "override-c.xml"),
     };
 
-    [Fact]
-    public void OverridingConfigsTest2()
+    [Test]
+    public void OverridingTest()
     {
         var expectedXml = new XmlDocument();
         expectedXml.Load(ExpectedFilePath);
         var overrider = new Overrider(FromXmlFiles, ToXmlFilePath, MarkupFilePath, SchemeFilePath);
 
-        Assert.Equal(expectedXml.OuterXml, overrider.Process().Get().OuterXml);
+        Assert.That(overrider.Process().Get().OuterXml, Is.EqualTo(expectedXml.OuterXml));
     }
 }

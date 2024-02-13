@@ -1,8 +1,8 @@
 using System.Xml;
 
-using XmlOverrider.Extensions;
+using NUnit.Framework;
 
-using Xunit;
+using XmlOverrider.Extensions;
 
 namespace XmlOverrider.Tests;
 
@@ -17,30 +17,25 @@ public class MarkupExtensionsTest
           />
           """;
 
-    [Fact]
-    public void OverridingConfigsMarkupExtensionsTest()
-    {
-        var element = Load();
-
-        Assert.False(element!.IsAttributeElement());
-        Assert.True(element.IsElementType());
-        Assert.Equal("bar", element.GetAttributeIdName());
-
-        Assert.True(element.HasAttributeIdName());
-        Assert.Equal("foo", element.GetElementName());
-
-        Assert.True(element.HasAttributeIdValue());
-        Assert.Equal("qwerty", element.GetAttributeIdValue());
-
-        Assert.True(element.IsOverridable());
-        Assert.True(element.IsOverrideInnerXml());
-    }
-
-    private static XmlElement Load()
+    [Test]
+    public void OverridingMarkupExtensionsTest()
     {
         var xml = new XmlDocument();
         xml.LoadXml(Xml);
 
-        return xml.DocumentElement;
+        var element = xml.DocumentElement;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(element!.IsAttributeElement(), Is.False);
+            Assert.That(element.IsElementType(), Is.True);
+            Assert.That(element.GetAttributeIdName(), Is.EqualTo("bar"));
+            Assert.That(element.HasAttributeIdName(), Is.True);
+            Assert.That(element.GetElementName(), Is.EqualTo("foo"));
+            Assert.That(element.HasAttributeIdValue(), Is.True);
+            Assert.That(element.GetAttributeIdValue(), Is.EqualTo("qwerty"));
+            Assert.That(element.IsOverridable(), Is.True);
+            Assert.That(element.IsOverrideInnerXml(), Is.True);
+        });
     }
 }
