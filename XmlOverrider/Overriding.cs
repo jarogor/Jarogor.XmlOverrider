@@ -1,13 +1,19 @@
 using System.Xml;
 
+using Microsoft.Extensions.Logging;
+
 using XmlOverrider.Extensions;
 
 namespace XmlOverrider;
 
-public static class Overriding
+internal static class Overriding
 {
-    public static void Processing(Markup markup, XmlDocument from, XmlDocument to)
+    private static ILogger? s_logger;
+
+    public static void Processing(ILogger? logger, Markup markup, XmlDocument from, XmlDocument to)
     {
+        s_logger = logger;
+
         ProcessingRecursive(
             markup.XmlDocument.DocumentElement ?? throw new InvalidOperationException("markUpXml"),
             from.DocumentElement ?? throw new InvalidOperationException("from"),
@@ -62,6 +68,7 @@ public static class Overriding
             if (markup.IsOverrideInnerXml())
             {
                 ReplaceChildren(to, fromChild, toChild);
+                s_logger?.LogInformation($"Inner xml of element: {LogHelper.Message(fromChild, markup)}");
                 return;
             }
 
@@ -93,26 +100,27 @@ public static class Overriding
                     continue;
                 }
 
-                OverrideAttribute(to, overrideAttribute);
+                OverrideAttribute(markup, from, to, overrideAttribute);
             }
         }
     }
 
-    private static void OverrideAttribute(XmlElement to, XmlAttribute overrideAttribute)
+    private static void OverrideAttribute(XmlElement markup, XmlElement from, XmlElement to, XmlAttribute fromAttribute)
     {
-        foreach (XmlAttribute targetAttribute in to.Attributes)
+        foreach (XmlAttribute toAttribute in to.Attributes)
         {
-            if (targetAttribute.LocalName != overrideAttribute.LocalName)
+            if (toAttribute.LocalName != fromAttribute.LocalName)
             {
                 continue;
             }
 
-            if (targetAttribute.Value == overrideAttribute.Value)
+            if (toAttribute.Value == fromAttribute.Value)
             {
                 continue;
             }
 
-            targetAttribute.Value = overrideAttribute.Value;
+            s_logger?.LogInformation($"Attributes on the element: {LogHelper.Message(from, markup)}");
+            toAttribute.Value = fromAttribute.Value;
         }
     }
 
