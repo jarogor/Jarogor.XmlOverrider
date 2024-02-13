@@ -5,31 +5,15 @@ namespace XmlOverrider;
 
 public class Markup
 {
-    public XmlDocument XmlDocument { get; }
+    public readonly XmlDocument XmlDocument = new();
 
     public Markup(string markupFilePath, string xsdFilePath)
     {
         var settings = ValidationSettings(xsdFilePath);
         var markupReader = XmlReader.Create(markupFilePath, settings);
 
-        XmlDocument = new XmlDocument();
         XmlDocument.Load(markupReader);
         XmlDocument.Validate(ValidationEventHandler);
-    }
-
-    private static void ValidationEventHandler(object sender, ValidationEventArgs e)
-    {
-        switch (e.Severity)
-        {
-            case XmlSeverityType.Error:
-                Console.WriteLine("Error: {0}", e.Message);
-                break;
-            case XmlSeverityType.Warning:
-                Console.WriteLine("Warning {0}", e.Message);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(e.Severity.ToString());
-        }
     }
 
     private static XmlReaderSettings ValidationSettings(string xsdFilePath)
@@ -45,5 +29,20 @@ public class Markup
         settings.ValidationType = ValidationType.Schema;
 
         return settings;
+    }
+
+    private static void ValidationEventHandler(object sender, ValidationEventArgs e)
+    {
+        switch (e.Severity)
+        {
+            case XmlSeverityType.Error:
+                Console.WriteLine("Error: {0}", e.Message);
+                break;
+            case XmlSeverityType.Warning:
+                Console.WriteLine("Warning {0}", e.Message);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(e.Severity.ToString());
+        }
     }
 }
