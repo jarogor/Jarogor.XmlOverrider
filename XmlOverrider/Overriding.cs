@@ -10,18 +10,18 @@ internal static class Overriding
 {
     private static ILogger? s_logger;
 
-    public static void Processing(ILogger? logger, Markup markup, XmlDocument from, XmlDocument to)
+    public static void Processing(ILogger? logger, Markup markup, XmlDocument from, XmlDocument target)
     {
         s_logger = logger;
 
         ProcessingRecursive(
-            markup.XmlDocument.DocumentElement ?? throw new InvalidOperationException("markUpXml"),
-            from.DocumentElement ?? throw new InvalidOperationException("from"),
-            to.DocumentElement ?? throw new InvalidOperationException("to")
+            markup.XmlDocument.DocumentElement ?? throw new InvalidOperationException("markup xml"),
+            from.DocumentElement ?? throw new InvalidOperationException("from xml"),
+            target.DocumentElement ?? throw new InvalidOperationException("target xml")
         );
     }
 
-    private static void ProcessingRecursive(XmlElement markup, XmlElement from, XmlElement to)
+    private static void ProcessingRecursive(XmlNode markup, XmlNode from, XmlNode target)
     {
         if (!markup.HasChildNodes || !from.HasChildNodes)
         {
@@ -36,11 +36,11 @@ internal static class Overriding
                 continue;
             }
 
-            ProcessingChilds(markupChildNode, from, to);
+            ProcessingChilds(markupChildNode, from, target);
         }
     }
 
-    private static void ProcessingChilds(XmlElement markup, XmlNode from, XmlNode to)
+    private static void ProcessingChilds(XmlElement markup, XmlNode from, XmlNode target)
     {
         foreach (var fromChild in from.ChildNodes.OfType<XmlElement>())
         {
@@ -49,33 +49,33 @@ internal static class Overriding
                 continue;
             }
 
-            foreach (var toChild in to.ChildNodes.OfType<XmlElement>())
+            foreach (var targetChild in target.ChildNodes.OfType<XmlElement>())
             {
-                ProcessingChild(markup, to, fromChild, toChild);
+                ProcessingChild(markup, target, fromChild, targetChild);
             }
         }
     }
 
-    private static void ProcessingChild(XmlElement markup, XmlNode to, XmlElement fromChild, XmlElement toChild)
+    private static void ProcessingChild(XmlElement markup, XmlNode target, XmlElement fromChild, XmlElement targetChild)
     {
-        if (!IsElementNamesEquals(markup, fromChild, toChild))
+        if (!IsElementNamesEquals(markup, fromChild, targetChild))
         {
             return;
         }
 
-        if (markup.IsOverridable() && IsAttributeIdsEquals(markup, fromChild, toChild))
+        if (markup.IsOverridable() && IsAttributeIdsEquals(markup, fromChild, targetChild))
         {
             if (markup.IsOverrideInnerXml())
             {
-                ReplaceChildren(to, fromChild, toChild);
+                ReplaceChildren(target, fromChild, targetChild);
                 s_logger?.LogInformation($"Inner xml of element: {LogHelper.Message(fromChild, markup)}");
                 return;
             }
 
-            OverrideAttributes(markup, fromChild, toChild);
+            OverrideAttributes(markup, fromChild, targetChild.Attributes);
         }
 
-        ProcessingRecursive(markup, fromChild, toChild);
+        ProcessingRecursive(markup, fromChild, targetChild);
     }
 
     private static void ReplaceChildren(XmlNode parent, XmlNode newChild, XmlNode oldChild)
@@ -89,38 +89,38 @@ internal static class Overriding
         parent.ReplaceChild(newNode, oldChild);
     }
 
-    private static void OverrideAttributes(XmlElement markup, XmlElement from, XmlElement to)
+    private static void OverrideAttributes(XmlElement markup, XmlElement from, XmlAttributeCollection targetAttributes)
     {
         foreach (var markupAttrName in MarkupAttributeNames(markup))
         {
-            foreach (XmlAttribute overrideAttribute in from.Attributes)
+            foreach (XmlAttribute fromAttribute in from.Attributes)
             {
-                if (markupAttrName != overrideAttribute.LocalName)
+                if (markupAttrName != fromAttribute.LocalName)
                 {
                     continue;
                 }
 
-                OverrideAttribute(markup, from, to, overrideAttribute);
+                OverrideAttribute(markup, from, targetAttributes, fromAttribute);
             }
         }
     }
 
-    private static void OverrideAttribute(XmlElement markup, XmlElement from, XmlElement to, XmlAttribute fromAttribute)
+    private static void OverrideAttribute(XmlElement markup, XmlElement from, XmlAttributeCollection targetAttributes, XmlAttribute fromAttribute)
     {
-        foreach (XmlAttribute toAttribute in to.Attributes)
+        foreach (XmlAttribute targetAttribute in targetAttributes)
         {
-            if (toAttribute.LocalName != fromAttribute.LocalName)
+            if (targetAttribute.LocalName != fromAttribute.LocalName)
             {
                 continue;
             }
 
-            if (toAttribute.Value == fromAttribute.Value)
+            if (targetAttribute.Value == fromAttribute.Value)
             {
                 continue;
             }
 
             s_logger?.LogInformation($"Attributes on the element: {LogHelper.Message(from, markup)}");
-            toAttribute.Value = fromAttribute.Value;
+            targetAttribute.Value = fromAttribute.Value;
         }
     }
 
@@ -132,7 +132,7 @@ internal static class Overriding
             .Select(it => it.GetElementName());
     }
 
-    private static bool IsElementNamesEquals(XmlElement markup, XmlNode from, XmlNode to)
+    private static bool IsElementNamesEquals(XmlElement markup, XmlNode from, XmlNode target)
     {
         if (!markup.IsElementType())
         {
@@ -141,7 +141,7 @@ internal static class Overriding
 
         var name = markup.GetElementName();
 
-        return IsElementFound(from, name) && IsElementFound(to, name);
+        return IsElementFound(from, name) && IsElementFound(target, name);
     }
 
     private static bool IsElementFound(XmlNode element, string name)
@@ -149,9 +149,8 @@ internal static class Overriding
         return element.NodeType == XmlNodeType.Element && element.LocalName == name;
     }
 
-    private static bool IsAttributeIdsEquals(XmlElement markup, XmlElement from, XmlElement to)
+    private static bool IsAttributeIdsEquals(XmlElement markup, XmlElement from, XmlElement target)
     {
-        // Не определён в разметке идентифицирующий атрибут или отсутствуют атрибуты у перекрывающего конфига.
         if (!markup.HasAttributeIdName() || !from.HasAttributes)
         {
             return false;
@@ -159,16 +158,14 @@ internal static class Overriding
 
         var key = markup.GetAttributeIdName();
 
-        // В перекрывающем конфиге отсутствует указанный в разметке идентифицирующий атрибут.
         if (!from.HasAttribute(key))
         {
             return false;
         }
 
-        var targetValue = to.GetAttribute(key);
+        var targetValue = target.GetAttribute(key);
         var isValueEquals = from.GetAttribute(key) == targetValue;
 
-        // Если указано сравнение по конкретному значению идентифицирующего атрибута.
         if (markup.HasAttributeIdValue())
         {
             return isValueEquals && targetValue == markup.GetAttributeIdValue();
