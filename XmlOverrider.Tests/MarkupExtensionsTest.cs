@@ -28,14 +28,14 @@ public class MarkupExtensionsTest
         Assert.Multiple(() =>
         {
             Assert.That(element!.IsAttributeElement(), Is.False);
-            Assert.That(element.IsElementType(), Is.True);
-            Assert.That(element.GetAttributeIdName(), Is.EqualTo("bar"));
-            Assert.That(element.HasAttributeIdName(), Is.True);
-            Assert.That(element.GetElementName(), Is.EqualTo("foo"));
-            Assert.That(element.HasAttributeIdValue(), Is.True);
-            Assert.That(element.GetAttributeIdValue(), Is.EqualTo("qwerty"));
-            Assert.That(element.IsOverridable(), Is.True);
-            Assert.That(element.IsOverrideInnerXml(), Is.True);
+            Assert.That(element!.IsElementType(), Is.True);
+            Assert.That(element!.GetAttributeIdName(), Is.EqualTo("bar"));
+            Assert.That(element!.HasAttributeIdName(), Is.True);
+            Assert.That(element!.GetElementName(), Is.EqualTo("foo"));
+            Assert.That(element!.HasAttributeIdValue(), Is.True);
+            Assert.That(element!.GetAttributeIdValue(), Is.EqualTo("qwerty"));
+            Assert.That(element!.IsOverridable(), Is.True);
+            Assert.That(element!.IsOverrideInnerXml(), Is.True);
         });
     }
 }
