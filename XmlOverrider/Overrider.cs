@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -7,73 +6,49 @@ using Microsoft.Extensions.Logging;
 
 namespace XmlOverrider;
 
-public sealed class Overrider
+public abstract class Overrider<T>
 {
-    public ILogger? Logger { get; set; }
-
-    private readonly string _markupXsdFilePath
-        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Markup.xsd");
-
+    protected ILogger? Logger { get; }
     private readonly Markup _markup;
 
-    private readonly XmlDocument _toXml = new();
-
-    private readonly string _toXmlFilePath;
-
-    private readonly List<string> _fromXmlFilesPaths = new();
-
-
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    public Overrider(
-        string fromXmlFilePath,
-        string toXmlFilePath,
-        string markupFilePath,
-        string? markupXsdFilePath = null)
+    protected Overrider(ILogger? logger, string markupFilePath, string? schemeFilePath = null)
     {
-        _markup = new Markup(markupFilePath, markupXsdFilePath ?? _markupXsdFilePath);
-        _toXml.Load(toXmlFilePath);
-        _toXmlFilePath = toXmlFilePath;
-        _fromXmlFilesPaths.Add(fromXmlFilePath);
+        _markup = SetMarkup(markupFilePath, schemeFilePath);
+        Logger = logger;
     }
 
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    public Overrider(
-        IEnumerable<string> fromXmlFilesPaths,
-        string toXmlFilePath,
-        string markupFilePath,
-        string? markupXsdFilePath = null)
+    protected Overrider(string markupFilePath, string? schemeFilePath = null)
     {
-        _markup = new Markup(markupFilePath, markupXsdFilePath ?? _markupXsdFilePath);
-        _toXml.Load(toXmlFilePath);
-        _toXmlFilePath = toXmlFilePath;
-        _fromXmlFilesPaths.AddRange(fromXmlFilesPaths);
+        _markup = SetMarkup(markupFilePath, schemeFilePath);
     }
 
-    public Overrider Process()
+    protected abstract XmlDocument TargetXml { get; set; }
+
+    public abstract T Processing();
+
+    protected void Processing(XmlDocument overridingXmlDocument)
     {
-        foreach (var fromXmlPath in _fromXmlFilesPaths)
-        {
-            var from = new XmlDocument();
-            from.Load(fromXmlPath);
-
-            Logger?.LogDebug("Processing {0}", fromXmlPath);
-            Overriding.Processing(Logger, _markup, from, _toXml);
-        }
-
-        return this;
-    }
-
-    public void Save()
-    {
-        _toXml.Save(_toXmlFilePath);
+        Overriding.Processing(Logger, _markup, overridingXmlDocument, TargetXml);
     }
 
     public XmlDocument Get()
     {
-        return _toXml;
+        return TargetXml;
+    }
+
+    private static Markup SetMarkup(string filePath, string? schemeFilePath = null)
+    {
+        schemeFilePath ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Markup.xsd");
+        if (!File.Exists(schemeFilePath))
+        {
+            throw new FileNotFoundException($"XSD scheme file does not exist: [{schemeFilePath}]");
+        }
+
+        if (!File.Exists(filePath))
+        {
+            throw new FileNotFoundException($"Markup xml file does not exist: [{filePath}]");
+        }
+
+        return new Markup(filePath, schemeFilePath);
     }
 }
