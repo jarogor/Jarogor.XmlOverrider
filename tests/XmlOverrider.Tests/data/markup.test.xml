@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overrideMarkup
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="file:///..\..\..\XmlOverrider\XmlOverrider\Scheme\Markup.xsd">
+        xsi:noNamespaceSchemaLocation="file:///..\..\..\src\XmlOverrider\Scheme\Markup.xsd">
 
     <node name="section-a">
         <!--
-         Переопределяет содержимое элемента 
+         Переопределяет содержимое элемента
          сравнивая (идентифицируя) по содержимому атрибута "key"
          и только для его значения "b".
+
+         Overrides the contents of an element
+         comparing (identifying) by the contents of the "key" attribute
+         and only for its value "b".
         -->
         <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
     </node>
 
     <node name="section-b">
         <!--
-         Переопределяет содержимое элемента 
+         Переопределяет содержимое элемента
          сравнивая (идентифицируя) по содержимому атрибута "key".
+
+         Overrides the contents of an element
+         comparing (identifying) by the contents of the "key" attribute.
         -->
         <node name="item" attributeIdName="key" override="innerXml"/>
     </node>
@@ -24,6 +31,9 @@
         <!--
          Переопределяет у элмента "item" значение атрибута "value"
          сравнивая (идентифицируя) по содержимому атрибута "key".
+
+         Overrides the "item" attribute value of the element "value"
+         comparing (identifying) by the contents of the "key" attribute.
         -->
         <node name="item" attributeIdName="key" override="attributes">
             <attribute name="value"/>
