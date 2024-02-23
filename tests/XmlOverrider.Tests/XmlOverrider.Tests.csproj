@@ -33,7 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\XmlOverrider\XmlOverrider.csproj"/>
+        <ProjectReference Include="..\..\src\XmlOverrider\XmlOverrider.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -43,7 +43,7 @@
         <Content CopyToOutputDirectory="Always" Include=".\data\override-b.xml"/>
         <Content CopyToOutputDirectory="Always" Include=".\data\override-c.xml"/>
         <Content CopyToOutputDirectory="Always" Include=".\data\expected.xml"/>
-        <EmbeddedResource CopyToOutputDirectory="Always" Include="..\XmlOverrider\Scheme\Markup.xsd">
+        <EmbeddedResource CopyToOutputDirectory="Always" Include="..\..\src\XmlOverrider\Scheme\Markup.xsd">
             <Link>.\data\Markup.xsd</Link>
         </EmbeddedResource>
     </ItemGroup>
