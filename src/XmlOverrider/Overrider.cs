@@ -9,17 +9,17 @@ namespace XmlOverrider;
 public abstract class Overrider<T>
 {
     protected ILogger? Logger { get; }
-    private readonly Markup _markup;
+    private readonly Rules _rules;
 
-    protected Overrider(ILogger? logger, string markupFilePath, string? schemeFilePath = null)
+    protected Overrider(ILogger? logger, string rulesFilePath, string? schemeFilePath = null)
     {
-        _markup = SetMarkup(markupFilePath, schemeFilePath);
+        _rules = SetRules(rulesFilePath, schemeFilePath);
         Logger = logger;
     }
 
-    protected Overrider(string markupFilePath, string? schemeFilePath = null)
+    protected Overrider(string rulesFilePath, string? schemeFilePath = null)
     {
-        _markup = SetMarkup(markupFilePath, schemeFilePath);
+        _rules = SetRules(rulesFilePath, schemeFilePath);
     }
 
     protected abstract XmlDocument TargetXml { get; set; }
@@ -28,7 +28,7 @@ public abstract class Overrider<T>
 
     protected void Processing(XmlDocument overridingXmlDocument)
     {
-        Overriding.Processing(Logger, _markup, overridingXmlDocument, TargetXml);
+        Overriding.Processing(Logger, _rules, overridingXmlDocument, TargetXml);
     }
 
     public XmlDocument Get()
@@ -36,9 +36,9 @@ public abstract class Overrider<T>
         return TargetXml;
     }
 
-    private static Markup SetMarkup(string filePath, string? schemeFilePath = null)
+    private static Rules SetRules(string filePath, string? schemeFilePath = null)
     {
-        schemeFilePath ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Markup.xsd");
+        schemeFilePath ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Rules.xsd");
         if (!File.Exists(schemeFilePath))
         {
             throw new FileNotFoundException($"XSD scheme file does not exist: [{schemeFilePath}]");
@@ -46,9 +46,9 @@ public abstract class Overrider<T>
 
         if (!File.Exists(filePath))
         {
-            throw new FileNotFoundException($"Markup xml file does not exist: [{filePath}]");
+            throw new FileNotFoundException($"Rules xml file does not exist: [{filePath}]");
         }
 
-        return new Markup(filePath, schemeFilePath);
+        return new Rules(filePath, schemeFilePath);
     }
 }

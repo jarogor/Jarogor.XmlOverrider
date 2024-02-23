@@ -8,8 +8,8 @@ public class OverrideTest
 {
     private static readonly string BasePath = Path.Combine(Environment.CurrentDirectory, "data");
 
-    private static readonly string MarkupFilePath = Path.Combine(BasePath, "markup.test.xml");
-    private static readonly string SchemeFilePath = Path.Combine(BasePath, "Markup.xsd");
+    private static readonly string RulesFilePath = Path.Combine(BasePath, "rules.test.xml");
+    private static readonly string SchemeFilePath = Path.Combine(BasePath, "Rules.xsd");
     private static readonly string TargetXmlFilePath = Path.Combine(BasePath, "test.xml");
     private static readonly string ExpectedFilePath = Path.Combine(BasePath, "expected.xml");
 
@@ -23,7 +23,7 @@ public class OverrideTest
     [Test]
     public void OverridingFromFilesSuccess()
     {
-        var overrider = new FilesOverrider(TargetXmlFilePath, MarkupFilePath, SchemeFilePath);
+        var overrider = new FilesOverrider(TargetXmlFilePath, RulesFilePath, SchemeFilePath);
         var actual = overrider.AddOverride(FromXmlFiles).Processing().Get();
         var expected = LoadXml(ExpectedFilePath).OuterXml;
         Assert.That(actual.OuterXml, Is.EqualTo(expected));
@@ -32,7 +32,7 @@ public class OverrideTest
     [Test]
     public void OverridingFromXmlDocumentSuccess()
     {
-        var overrider = new XmlDocumentOverrider(LoadXml(TargetXmlFilePath), MarkupFilePath, SchemeFilePath);
+        var overrider = new XmlDocumentOverrider(LoadXml(TargetXmlFilePath), RulesFilePath, SchemeFilePath);
         foreach (var file in FromXmlFiles)
         {
             overrider.AddOverride(LoadXml(file));
@@ -46,7 +46,7 @@ public class OverrideTest
     [Test]
     public void OverridingFromStringSuccess()
     {
-        var overrider = new StringOverrider(LoadXml(TargetXmlFilePath).OuterXml, MarkupFilePath, SchemeFilePath);
+        var overrider = new StringOverrider(LoadXml(TargetXmlFilePath).OuterXml, RulesFilePath, SchemeFilePath);
         foreach (var file in FromXmlFiles)
         {
             overrider.AddOverride(LoadXml(file));

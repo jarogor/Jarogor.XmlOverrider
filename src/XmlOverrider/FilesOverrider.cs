@@ -17,16 +17,16 @@ public sealed class FilesOverrider : Overrider<FilesOverrider>, IFilesOverrider<
     /// </summary>
     /// <param name="logger">ILogger implementation</param>
     /// <param name="targetXmlFilePath">Path to the xml file that needs to be overridden</param>
-    /// <param name="markupFilePath">Path to override markup file</param>
-    /// <param name="schemeFilePath">Path to the override markup schema file</param>
+    /// <param name="rulesFilePath">Path to override rules file</param>
+    /// <param name="schemeFilePath">Path to the override rules schema file</param>
     public FilesOverrider(
         ILogger logger,
         string targetXmlFilePath,
-        string markupFilePath,
+        string rulesFilePath,
         string? schemeFilePath = null
     ) : base(
         logger,
-        markupFilePath,
+        rulesFilePath,
         schemeFilePath
     )
     {
@@ -38,14 +38,14 @@ public sealed class FilesOverrider : Overrider<FilesOverrider>, IFilesOverrider<
     /// Without logger (logger is null).
     /// </summary>
     /// <param name="targetXmlFilePath">Path to the xml file that needs to be overridden</param>
-    /// <param name="markupFilePath">Path to override markup file</param>
-    /// <param name="schemeFilePath">Path to the override markup schema file</param>
+    /// <param name="rulesFilePath">Path to override rules file</param>
+    /// <param name="schemeFilePath">Path to the override rules schema file</param>
     public FilesOverrider(
         string targetXmlFilePath,
-        string markupFilePath,
+        string rulesFilePath,
         string? schemeFilePath = null
     ) : base(
-        markupFilePath,
+        rulesFilePath,
         schemeFilePath
     )
     {

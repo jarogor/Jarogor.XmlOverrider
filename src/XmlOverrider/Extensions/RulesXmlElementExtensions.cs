@@ -2,7 +2,7 @@ using System.Xml;
 
 namespace XmlOverrider.Extensions;
 
-public static class MarkupXmlElementExtensions
+public static class RulesXmlElementExtensions
 {
     private const string Name = "name";
 

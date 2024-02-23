@@ -4,18 +4,18 @@ using System.Xml.Schema;
 
 namespace XmlOverrider;
 
-internal sealed class Markup
+internal sealed class Rules
 {
     public readonly XmlDocument XmlDocument = new();
 
-    public Markup(
-        string markupFilePath,
+    public Rules(
+        string rulesFilePath,
         string xsdFilePath)
     {
         var settings = ValidationSettings(xsdFilePath);
-        var markupReader = XmlReader.Create(markupFilePath, settings);
+        var reader = XmlReader.Create(rulesFilePath, settings);
 
-        XmlDocument.Load(markupReader);
+        XmlDocument.Load(reader);
         XmlDocument.Validate((_, e) => throw e.Exception);
     }
 

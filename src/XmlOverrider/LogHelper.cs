@@ -6,9 +6,9 @@ namespace XmlOverrider;
 
 internal static class LogHelper
 {
-    public static string Message(XmlElement element, XmlElement markup)
+    public static string Message(XmlElement element, XmlElement rules)
     {
-        var key = markup.GetAttributeIdName();
+        var key = rules.GetAttributeIdName();
 
         return $"{XPath(element)}[@{key}='{element.GetAttribute(key)}']";
     }

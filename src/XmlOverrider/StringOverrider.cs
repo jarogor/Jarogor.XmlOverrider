@@ -11,17 +11,17 @@ public class StringOverrider : XmlDocumentOverrider
     /// </summary>
     /// <param name="logger">ILogger implementation</param>
     /// <param name="xml">The xml that needs to be overridden</param>
-    /// <param name="markupFilePath">Path to override markup file</param>
-    /// <param name="schemeFilePath">Path to the override markup schema file</param>
+    /// <param name="rulesFilePath">Path to override rules file</param>
+    /// <param name="schemeFilePath">Path to the override rules schema file</param>
     public StringOverrider(
         ILogger? logger,
         string xml,
-        string markupFilePath,
+        string rulesFilePath,
         string? schemeFilePath = null
     ) : base(
         logger,
         XmlToDocument(xml),
-        markupFilePath,
+        rulesFilePath,
         schemeFilePath
     )
     {
@@ -31,15 +31,15 @@ public class StringOverrider : XmlDocumentOverrider
     /// Without logger (logger is null).
     /// </summary>
     /// <param name="xml">The xml file that needs to be overridden</param>
-    /// <param name="markupFilePath">Path to override markup file</param>
-    /// <param name="schemeFilePath">Path to the override markup schema file</param>
+    /// <param name="rulesFilePath">Path to override rules file</param>
+    /// <param name="schemeFilePath">Path to the override rules schema file</param>
     public StringOverrider(
         string xml,
-        string markupFilePath,
+        string rulesFilePath,
         string? schemeFilePath = null
     ) : base(
         XmlToDocument(xml),
-        markupFilePath,
+        rulesFilePath,
         schemeFilePath
     )
     {

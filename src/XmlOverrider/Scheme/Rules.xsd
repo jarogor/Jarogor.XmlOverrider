@@ -3,7 +3,7 @@
             elementFormDefault="qualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-    <xsd:element name="overrideMarkup">
+    <xsd:element name="overrideRules">
         <xsd:annotation>
             <xsd:documentation xml:lang="ru">Корневой узел</xsd:documentation>
             <xsd:documentation xml:lang="en">Root node</xsd:documentation>

@@ -6,7 +6,7 @@ using XmlOverrider.Extensions;
 
 namespace XmlOverrider.Tests;
 
-public class MarkupExtensionsTest
+public class RulesExtensionsTest
 {
     private const string Xml
         = """
@@ -18,7 +18,7 @@ public class MarkupExtensionsTest
           """;
 
     [Test]
-    public void OverridingMarkupExtensionsTest()
+    public void OverridingRulesExtensionsTest()
     {
         var xml = new XmlDocument();
         xml.LoadXml(Xml);
