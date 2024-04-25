@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml;
 using Jarogor.XmlOverrider.Contracts;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Jarogor.XmlOverrider.Overrider;
 
@@ -12,10 +13,7 @@ public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverri
     private readonly string _targetXmlFilePath;
     private readonly List<string> _overrideXmlFilesPaths = new();
 
-    /// <summary>
-    /// With logger.
-    /// </summary>
-    /// <param name="logger">ILogger implementation</param>
+    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
     /// <param name="targetXmlFilePath">Path to the xml file that needs to be overridden</param>
     /// <param name="rulesFilePath">Path to override rules file</param>
     /// <param name="schemeFilePath">Path to the override rules schema file</param>
@@ -26,6 +24,23 @@ public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverri
         string? schemeFilePath = null
     ) : base(
         logger,
+        rulesFilePath,
+        schemeFilePath
+    )
+    {
+        _targetXmlFilePath = SetTarget(targetXmlFilePath);
+        TargetXml.Load(_targetXmlFilePath);
+    }
+
+    /// <param name="targetXmlFilePath">Path to the xml file that needs to be overridden</param>
+    /// <param name="rulesFilePath">Path to override rules file</param>
+    /// <param name="schemeFilePath">Path to the override rules schema file</param>
+    public FilesOverrider(
+        string targetXmlFilePath,
+        string rulesFilePath,
+        string? schemeFilePath = null
+    ) : base(
+        new NullLogger<FilesOverrider>(),
         rulesFilePath,
         schemeFilePath
     )
