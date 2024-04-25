@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
+﻿using Jarogor.XmlOverrider.Overrider;
 using NUnit.Framework;
-using Jarogor.XmlOverrider.Overrider;
 
 namespace Jarogor.XmlOverrider.Tests.Overrrider;
 
@@ -9,14 +8,18 @@ public class XmlDocumentOverriderTest : OverrideTestBase
     [Test]
     public void OverridingFromXmlDocumentSuccess()
     {
-        var overrider = new XmlDocumentOverrider(new NullLogger<XmlDocumentOverrider>(), LoadXml(TargetXmlFilePath), RulesFilePath, SchemeFilePath);
+        var overrider = new XmlDocumentOverrider(
+            LoadXml(TargetXmlFilePath),
+            RulesFilePath,
+            SchemeFilePath
+        );
+
         foreach (var file in FromXmlFiles)
         {
             overrider.AddOverride(LoadXml(file));
         }
 
         var actual = overrider.Processing().Get();
-        var expected = LoadXml(ExpectedFilePath).OuterXml;
-        Assert.That(actual.OuterXml, Is.EqualTo(expected));
+        Assert.That(actual.OuterXml, Is.EqualTo(ExpectedXml));
     }
 }

@@ -17,6 +17,8 @@ public abstract class OverrideTestBase
         Path.Combine(BasePath, "override-c.xml"),
     };
 
+    protected static string ExpectedXml => LoadXml(ExpectedFilePath).OuterXml;
+
     protected static XmlDocument LoadXml(string filePath)
     {
         var xml = new XmlDocument();
