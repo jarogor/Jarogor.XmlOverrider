@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-
+using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
 
-using XmlOverrider.Extensions;
-using XmlOverrider.Scheme;
+using Jarogor.XmlOverrider.Extensions;
 
-namespace XmlOverrider;
+namespace Jarogor.XmlOverrider;
 
 internal sealed class Overriding<T>
 {

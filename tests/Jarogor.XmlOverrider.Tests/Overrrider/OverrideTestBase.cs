@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace XmlOverrider.Tests.Overrrider;
+namespace Jarogor.XmlOverrider.Tests.Overrrider;
 
 public abstract class OverrideTestBase
 {

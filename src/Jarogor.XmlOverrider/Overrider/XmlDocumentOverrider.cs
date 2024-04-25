@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using Jarogor.XmlOverrider.Contracts;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using XmlOverrider.Contracts;
 
-namespace XmlOverrider.Overrider;
+namespace Jarogor.XmlOverrider.Overrider;
 
 public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IStringOverrider<XmlDocumentOverrider>
 {

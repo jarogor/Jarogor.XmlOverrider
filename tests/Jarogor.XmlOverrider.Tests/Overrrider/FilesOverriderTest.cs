@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
-using XmlOverrider.Overrider;
+using Jarogor.XmlOverrider.Overrider;
 
-namespace XmlOverrider.Tests.Overrrider;
+namespace Jarogor.XmlOverrider.Tests.Overrrider;
 
 public class FilesOverriderTest : OverrideTestBase
 {

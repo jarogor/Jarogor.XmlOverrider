@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Jarogor.XmlOverrider.Contracts;
 using Microsoft.Extensions.Logging;
-using XmlOverrider.Contracts;
 
-namespace XmlOverrider.Overrider;
+namespace Jarogor.XmlOverrider.Overrider;
 
 public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverrider<FilesOverrider>
 {

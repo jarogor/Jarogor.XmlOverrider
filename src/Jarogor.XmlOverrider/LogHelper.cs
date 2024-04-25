@@ -1,8 +1,7 @@
 ﻿using System.Xml;
+using Jarogor.XmlOverrider.Extensions;
 
-using XmlOverrider.Extensions;
-
-namespace XmlOverrider;
+namespace Jarogor.XmlOverrider;
 
 internal static class LogHelper
 {

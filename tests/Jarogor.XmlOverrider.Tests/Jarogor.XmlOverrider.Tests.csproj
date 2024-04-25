@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Authors>Jarogor</Authors>
         <TargetFrameworks>net6.0;net462</TargetFrameworks>
         <LangVersion>11</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -33,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\XmlOverrider\XmlOverrider.csproj"/>
+        <ProjectReference Include="..\..\src\Jarogor.XmlOverrider\Jarogor.XmlOverrider.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -43,8 +42,12 @@
         <Content CopyToOutputDirectory="Always" Include=".\data\override-b.xml"/>
         <Content CopyToOutputDirectory="Always" Include=".\data\override-c.xml"/>
         <Content CopyToOutputDirectory="Always" Include=".\data\expected.xml"/>
-        <EmbeddedResource CopyToOutputDirectory="Always" Include="..\..\src\XmlOverrider\Scheme\Rules.xsd">
-            <Link>.\data\Rules.xsd</Link>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="..\..\src\Jarogor.XmlOverrider\Scheme\Rules.xsd">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Link>data\Rules.xsd</Link>
         </EmbeddedResource>
     </ItemGroup>
 

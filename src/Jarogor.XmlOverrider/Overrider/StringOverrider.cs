@@ -3,7 +3,7 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace XmlOverrider.Overrider;
+namespace Jarogor.XmlOverrider.Overrider;
 
 public class StringOverrider : XmlDocumentOverrider
 {

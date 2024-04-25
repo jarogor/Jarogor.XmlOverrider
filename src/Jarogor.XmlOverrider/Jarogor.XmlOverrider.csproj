@@ -2,19 +2,15 @@
 
     <PropertyGroup>
         <Authors>Jarogor</Authors>
-        <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>11</LangVersion>
         <Nullable>enable</Nullable>
 
-        <PackageId>XmlOverrider</PackageId>
-        <Version>0.0.0</Version>
+        <PackageId>Jarogor.XmlOverrider</PackageId>
         <PackageDescription>
             [RU] XmlOverrider — это библиотека с открытым исходным кодом, которая может помочь переопределить XML-документ другими документами с помощью простых правил.
             [EN] XmlOverrider is an open source library that can help you override an XML document with other documents using simple rules.
         </PackageDescription>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -26,7 +22,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4"/>
     </ItemGroup>
 
 </Project>
