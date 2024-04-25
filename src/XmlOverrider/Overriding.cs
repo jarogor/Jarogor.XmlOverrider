@@ -6,25 +6,31 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 
 using XmlOverrider.Extensions;
+using XmlOverrider.Scheme;
 
 namespace XmlOverrider;
 
-internal static class Overriding
+internal sealed class Overriding<T>
 {
-    private static ILogger? s_logger;
+    private readonly ILogger<T> _logger;
+    private readonly XmlElement _rules;
+    private readonly XmlElement _from;
+    private readonly XmlElement _target;
 
-    public static void Processing(ILogger? logger, Rules rules, XmlDocument from, XmlDocument target)
+    public Overriding(ILogger<T> logger, Rules rules, XmlDocument from, XmlDocument target)
     {
-        s_logger = logger;
-
-        ProcessingRecursive(
-            rules.XmlDocument.DocumentElement ?? throw new InvalidOperationException("rules xml"),
-            from.DocumentElement ?? throw new InvalidOperationException("from xml"),
-            target.DocumentElement ?? throw new InvalidOperationException("target xml")
-        );
+        _logger = logger;
+        _rules = rules.XmlDocument.DocumentElement ?? throw new InvalidOperationException("rules xml");
+        _from = from.DocumentElement ?? throw new InvalidOperationException("from xml");
+        _target = target.DocumentElement ?? throw new InvalidOperationException("target xml");
     }
 
-    private static void ProcessingRecursive(XmlNode rules, XmlNode from, XmlNode target)
+    public void Processing()
+    {
+        ProcessingRecursive(_rules, _from, _target);
+    }
+
+    private void ProcessingRecursive(XmlNode rules, XmlNode from, XmlNode target)
     {
         if (!rules.HasChildNodes || !from.HasChildNodes)
         {
@@ -43,7 +49,7 @@ internal static class Overriding
         }
     }
 
-    private static void ProcessingChilds(XmlElement rules, XmlNode from, XmlNode target)
+    private void ProcessingChilds(XmlElement rules, XmlNode from, XmlNode target)
     {
         foreach (var fromChild in from.ChildNodes.OfType<XmlElement>())
         {
@@ -59,7 +65,7 @@ internal static class Overriding
         }
     }
 
-    private static void ProcessingChild(XmlElement rules, XmlNode target, XmlElement fromChild, XmlElement targetChild)
+    private void ProcessingChild(XmlElement rules, XmlNode target, XmlElement fromChild, XmlElement targetChild)
     {
         if (!IsElementNamesEquals(rules, fromChild, targetChild))
         {
@@ -71,7 +77,7 @@ internal static class Overriding
             if (rules.IsOverrideInnerXml())
             {
                 ReplaceChildren(target, fromChild, targetChild);
-                s_logger?.LogInformation($"Inner xml of element: {LogHelper.Message(fromChild, rules)}");
+                _logger.LogInformation($"Inner xml of element: {LogHelper.Message(fromChild, rules)}");
                 return;
             }
 
@@ -92,7 +98,7 @@ internal static class Overriding
         parent.ReplaceChild(newNode, oldChild);
     }
 
-    private static void OverrideAttributes(XmlElement rules, XmlElement from, XmlAttributeCollection targetAttributes)
+    private void OverrideAttributes(XmlElement rules, XmlElement from, XmlAttributeCollection targetAttributes)
     {
         foreach (var rulesAttrName in RulesAttributeNames(rules))
         {
@@ -108,7 +114,7 @@ internal static class Overriding
         }
     }
 
-    private static void OverrideAttribute(XmlElement rules, XmlElement from, XmlAttributeCollection targetAttributes, XmlAttribute fromAttribute)
+    private void OverrideAttribute(XmlElement rules, XmlElement from, XmlAttributeCollection targetAttributes, XmlAttribute fromAttribute)
     {
         foreach (XmlAttribute targetAttribute in targetAttributes)
         {
@@ -122,7 +128,7 @@ internal static class Overriding
                 continue;
             }
 
-            s_logger?.LogInformation($"Attributes on the element: {LogHelper.Message(from, rules)}");
+            _logger.LogInformation($"Attributes on the element: {LogHelper.Message(from, rules)}");
             targetAttribute.Value = fromAttribute.Value;
         }
     }

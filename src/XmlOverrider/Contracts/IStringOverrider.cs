@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace XmlOverrider;
+namespace XmlOverrider.Contracts;
 
 public interface IStringOverrider<out T>
 {

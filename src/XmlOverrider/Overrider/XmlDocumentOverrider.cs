@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Xml;
-
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using XmlOverrider.Contracts;
 
-namespace XmlOverrider;
+namespace XmlOverrider.Overrider;
 
-public class XmlDocumentOverrider : Overrider<XmlDocumentOverrider>, IStringOverrider<XmlDocumentOverrider>
+public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IStringOverrider<XmlDocumentOverrider>
 {
     private readonly List<XmlDocument> _overridingXmlDocuments = new();
 
-    /// <summary>
-    /// With logger.
-    /// </summary>
-    /// <param name="logger">ILogger implementation</param>
+    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
     /// <param name="xml">The xml that needs to be overridden</param>
     /// <param name="rulesFilePath">Path to override rules file</param>
     /// <param name="schemeFilePath">Path to the override rules schema file</param>
     public XmlDocumentOverrider(
-        ILogger? logger,
+        ILogger<XmlDocumentOverrider> logger,
         XmlDocument xml,
         string rulesFilePath,
         string? schemeFilePath = null
@@ -30,10 +29,25 @@ public class XmlDocumentOverrider : Overrider<XmlDocumentOverrider>, IStringOver
         TargetXml = xml;
     }
 
-    /// <summary>
-    /// Without logger (logger is null).
-    /// </summary>
+    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
     /// <param name="xml">The xml file that needs to be overridden</param>
+    /// <param name="rulesStream">Override rules stream</param>
+    /// <param name="schemeStream">Override rules schema stream</param>
+    public XmlDocumentOverrider(
+        ILogger<XmlDocumentOverrider> logger,
+        XmlDocument xml,
+        TextReader rulesStream,
+        TextReader? schemeStream = null
+    ) : base(
+        logger,
+        rulesStream,
+        schemeStream
+    )
+    {
+        TargetXml = xml;
+    }
+
+    /// <param name="xml">The xml that needs to be overridden</param>
     /// <param name="rulesFilePath">Path to override rules file</param>
     /// <param name="schemeFilePath">Path to the override rules schema file</param>
     public XmlDocumentOverrider(
@@ -41,8 +55,25 @@ public class XmlDocumentOverrider : Overrider<XmlDocumentOverrider>, IStringOver
         string rulesFilePath,
         string? schemeFilePath = null
     ) : base(
+        new NullLogger<XmlDocumentOverrider>(),
         rulesFilePath,
         schemeFilePath
+    )
+    {
+        TargetXml = xml;
+    }
+
+    /// <param name="xml">The xml file that needs to be overridden</param>
+    /// <param name="rulesStream">Override rules stream</param>
+    /// <param name="schemeStream">Override rules schema stream</param>
+    public XmlDocumentOverrider(
+        XmlDocument xml,
+        TextReader rulesStream,
+        TextReader? schemeStream = null
+    ) : base(
+        new NullLogger<XmlDocumentOverrider>(),
+        rulesStream,
+        schemeStream
     )
     {
         TargetXml = xml;
@@ -54,7 +85,7 @@ public class XmlDocumentOverrider : Overrider<XmlDocumentOverrider>, IStringOver
     {
         for (var index = 0; index < _overridingXmlDocuments.Count; index++)
         {
-            Logger?.LogDebug("Processing {0}", index);
+            Logger.LogDebug("Processing {0}", index);
             Processing(_overridingXmlDocuments[index]);
         }
 

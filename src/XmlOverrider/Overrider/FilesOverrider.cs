@@ -2,12 +2,12 @@
 using System.IO;
 using System.Linq;
 using System.Xml;
-
 using Microsoft.Extensions.Logging;
+using XmlOverrider.Contracts;
 
-namespace XmlOverrider;
+namespace XmlOverrider.Overrider;
 
-public sealed class FilesOverrider : Overrider<FilesOverrider>, IFilesOverrider<FilesOverrider>
+public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverrider<FilesOverrider>
 {
     private readonly string _targetXmlFilePath;
     private readonly List<string> _overrideXmlFilesPaths = new();
@@ -20,31 +20,12 @@ public sealed class FilesOverrider : Overrider<FilesOverrider>, IFilesOverrider<
     /// <param name="rulesFilePath">Path to override rules file</param>
     /// <param name="schemeFilePath">Path to the override rules schema file</param>
     public FilesOverrider(
-        ILogger logger,
+        ILogger<FilesOverrider> logger,
         string targetXmlFilePath,
         string rulesFilePath,
         string? schemeFilePath = null
     ) : base(
         logger,
-        rulesFilePath,
-        schemeFilePath
-    )
-    {
-        _targetXmlFilePath = SetTarget(targetXmlFilePath);
-        TargetXml.Load(_targetXmlFilePath);
-    }
-
-    /// <summary>
-    /// Without logger (logger is null).
-    /// </summary>
-    /// <param name="targetXmlFilePath">Path to the xml file that needs to be overridden</param>
-    /// <param name="rulesFilePath">Path to override rules file</param>
-    /// <param name="schemeFilePath">Path to the override rules schema file</param>
-    public FilesOverrider(
-        string targetXmlFilePath,
-        string rulesFilePath,
-        string? schemeFilePath = null
-    ) : base(
         rulesFilePath,
         schemeFilePath
     )
@@ -59,7 +40,7 @@ public sealed class FilesOverrider : Overrider<FilesOverrider>, IFilesOverrider<
     {
         foreach (var fromXmlPath in _overrideXmlFilesPaths)
         {
-            Logger?.LogDebug("Processing {0}", fromXmlPath);
+            Logger.LogDebug("Processing {0}", fromXmlPath);
             var overridingXmlDocument = new XmlDocument();
             overridingXmlDocument.Load(fromXmlPath);
             Processing(overridingXmlDocument);

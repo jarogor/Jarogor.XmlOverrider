@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace XmlOverrider;
+namespace XmlOverrider.Contracts;
 
 public interface IFilesOverrider<out T>
 {
