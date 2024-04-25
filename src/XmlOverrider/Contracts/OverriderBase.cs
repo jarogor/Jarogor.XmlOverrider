@@ -1,9 +1,9 @@
 using System.IO;
 using System.Xml;
-using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
+using XmlOverrider.Scheme;
 
-namespace Jarogor.XmlOverrider.Contracts;
+namespace XmlOverrider.Contracts;
 
 public abstract class OverriderBase<T>
 {

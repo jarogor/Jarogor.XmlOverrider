@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace Jarogor.XmlOverrider.Contracts;
+namespace XmlOverrider.Contracts;
 
 public interface IStringOverrider<out T>
 {

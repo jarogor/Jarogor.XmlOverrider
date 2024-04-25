@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace Jarogor.XmlOverrider.Extensions;
+namespace XmlOverrider.Extensions;
 
 public static class RulesXmlElementExtensions
 {

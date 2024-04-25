@@ -1,15 +1,15 @@
-﻿using Jarogor.XmlOverrider.Overrider;
+﻿using XmlOverrider.Overrider;
 using NUnit.Framework;
 
-namespace Jarogor.XmlOverrider.Tests.Overrrider;
+namespace XmlOverrider.Tests.Overrrider;
 
-public class XmlDocumentOverriderTest : OverrideTestBase
+public class StringOverriderTest : OverrideTestBase
 {
     [Test]
-    public void OverridingFromXmlDocumentSuccess()
+    public void OverridingFromStringSuccess()
     {
-        var overrider = new XmlDocumentOverrider(
-            LoadXml(TargetXmlFilePath),
+        var overrider = new StringOverrider(
+            LoadXml(TargetXmlFilePath).OuterXml,
             RulesFilePath,
             SchemeFilePath
         );

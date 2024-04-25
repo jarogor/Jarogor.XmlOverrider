@@ -1,7 +1,7 @@
-using Jarogor.XmlOverrider.Overrider;
+using XmlOverrider.Overrider;
 using NUnit.Framework;
 
-namespace Jarogor.XmlOverrider.Tests.Overrrider;
+namespace XmlOverrider.Tests.Overrrider;
 
 public class FilesOverriderTest : OverrideTestBase
 {

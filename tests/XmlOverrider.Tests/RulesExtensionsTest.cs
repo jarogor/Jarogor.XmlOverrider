@@ -2,9 +2,9 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using Jarogor.XmlOverrider.Extensions;
+using XmlOverrider.Extensions;
 
-namespace Jarogor.XmlOverrider.Tests;
+namespace XmlOverrider.Tests;
 
 public class RulesExtensionsTest
 {
