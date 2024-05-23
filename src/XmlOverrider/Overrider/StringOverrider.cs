@@ -1,7 +1,6 @@
-﻿using System.IO;
-using System.Xml;
+﻿using System.Xml;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
+using XmlOverrider.Scheme;
 
 namespace XmlOverrider.Overrider;
 
@@ -11,60 +10,8 @@ namespace XmlOverrider.Overrider;
 public class StringOverrider : XmlDocumentOverrider
 {
     /// <inheritdoc />
-    public StringOverrider(
-        ILogger<StringOverrider> logger,
-        string xml,
-        string rulesFilePath,
-        string? schemeFilePath = null
-    ) : base(
-        logger,
-        XmlToDocument(xml),
-        rulesFilePath,
-        schemeFilePath
-    )
-    {
-    }
-
-    /// <inheritdoc />
-    public StringOverrider(
-        ILogger<StringOverrider> logger,
-        string xml,
-        TextReader rulesStream,
-        TextReader? schemeStream = null
-    ) : base(
-        logger,
-        XmlToDocument(xml),
-        rulesStream,
-        schemeStream
-    )
-    {
-    }
-
-    /// <inheritdoc />
-    public StringOverrider(
-        string xml,
-        string rulesFilePath,
-        string? schemeFilePath = null
-    ) : base(
-        new NullLogger<StringOverrider>(),
-        XmlToDocument(xml),
-        rulesFilePath,
-        schemeFilePath
-    )
-    {
-    }
-
-    /// <inheritdoc />
-    public StringOverrider(
-        string xml,
-        TextReader rulesStream,
-        TextReader? schemeStream = null
-    ) : base(
-        new NullLogger<StringOverrider>(),
-        XmlToDocument(xml),
-        rulesStream,
-        schemeStream
-    )
+    public StringOverrider(Rules rules, string xml, ILogger<StringOverrider>? logger = null)
+        : base(rules, XmlToDocument(xml), logger)
     {
     }
 

@@ -1,5 +1,5 @@
-﻿using XmlOverrider.Overrider;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using XmlOverrider.Overrider;
 
 namespace XmlOverrider.Tests.Overrrider;
 
@@ -8,11 +8,7 @@ public class StringOverriderTest : OverrideTestBase
     [Test]
     public void OverridingFromStringSuccess()
     {
-        var overrider = new StringOverrider(
-            LoadXml(TargetXmlFilePath).OuterXml,
-            RulesFilePath,
-            SchemeFilePath
-        );
+        var overrider = new StringOverrider(s_rules, LoadXml(TargetXmlFilePath).OuterXml);
 
         foreach (var file in FromXmlFiles)
         {

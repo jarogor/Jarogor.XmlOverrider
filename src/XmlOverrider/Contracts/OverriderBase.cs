@@ -1,6 +1,6 @@
-using System.IO;
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using XmlOverrider.Scheme;
 
 namespace XmlOverrider.Contracts;
@@ -15,38 +15,18 @@ public abstract class OverriderBase<T>
     /// Logger
     /// </summary>
     protected ILogger<T> Logger { get; }
-    private readonly Rules _rules;
 
-    /// <summary>
-    /// Constructor for files paths
-    /// </summary>
-    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    /// <param name="rulesFilePath">Path to override rules file</param>
-    /// <param name="schemeFilePath">Path to the override rules schema file</param>
-    protected OverriderBase(
-        ILogger<T> logger,
-        string rulesFilePath,
-        string? schemeFilePath = null
-    )
-    {
-        _rules = new Rules(rulesFilePath, schemeFilePath);
-        Logger = logger;
-    }
+    private readonly Rules _rules;
 
     /// <summary>
     /// Constructor for streams
     /// </summary>
+    /// <param name="rules">Overriding rules</param>
     /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    /// <param name="rulesStream">Override rules stream</param>
-    /// <param name="schemeStream">Override rules schema stream</param>
-    protected OverriderBase(
-        ILogger<T> logger,
-        TextReader rulesStream,
-        TextReader? schemeStream = null
-    )
+    protected OverriderBase(Rules rules, ILogger<T>? logger = null)
     {
-        _rules = new Rules(rulesStream, schemeStream);
-        Logger = logger;
+        _rules = rules;
+        Logger = logger ?? new NullLogger<T>();
     }
 
     /// <summary>
@@ -66,7 +46,7 @@ public abstract class OverriderBase<T>
     /// <param name="overridingXmlDocument">overriding xml</param>
     protected void Processing(XmlDocument overridingXmlDocument)
     {
-        new Overriding<T>(Logger, _rules, overridingXmlDocument, TargetXml).Processing();
+        new Overriding<T>(_rules, overridingXmlDocument, TargetXml, Logger).Processing();
     }
 
     /// <summary>

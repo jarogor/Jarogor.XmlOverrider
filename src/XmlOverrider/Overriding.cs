@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using XmlOverrider.Extensions;
 using XmlOverrider.Scheme;
 
@@ -15,9 +16,9 @@ internal sealed class Overriding<T>
     private readonly XmlElement _from;
     private readonly XmlElement _target;
 
-    public Overriding(ILogger<T> logger, Rules rules, XmlDocument from, XmlDocument target)
+    public Overriding(Rules rules, XmlDocument from, XmlDocument target, ILogger<T>? logger = null)
     {
-        _logger = logger;
+        _logger = logger ?? new NullLogger<T>();
         _rules = rules.XmlDocument.DocumentElement ?? throw new InvalidOperationException("rules xml");
         _from = from.DocumentElement ?? throw new InvalidOperationException("from xml");
         _target = target.DocumentElement ?? throw new InvalidOperationException("target xml");
@@ -75,7 +76,7 @@ internal sealed class Overriding<T>
             if (rules.IsOverrideInnerXml())
             {
                 ReplaceChildren(target, fromChild, targetChild);
-                _logger.LogInformation($"Inner xml of element: {LogHelper.Message(fromChild, rules)}");
+                _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(fromChild, rules));
                 return;
             }
 
@@ -126,7 +127,7 @@ internal sealed class Overriding<T>
                 continue;
             }
 
-            _logger.LogInformation($"Attributes on the element: {LogHelper.Message(from, rules)}");
+            _logger.LogInformation("Attributes on the element: {0}", LogHelper.Message(from, rules));
             targetAttribute.Value = fromAttribute.Value;
         }
     }

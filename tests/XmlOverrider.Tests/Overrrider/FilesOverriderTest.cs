@@ -1,5 +1,5 @@
-using XmlOverrider.Overrider;
 using NUnit.Framework;
+using XmlOverrider.Overrider;
 
 namespace XmlOverrider.Tests.Overrrider;
 
@@ -8,11 +8,7 @@ public class FilesOverriderTest : OverrideTestBase
     [Test]
     public void OverridingFromFilesSuccess()
     {
-        var overrider = new FilesOverrider(
-            TargetXmlFilePath,
-            RulesFilePath,
-            SchemeFilePath
-        );
+        var overrider = new FilesOverrider(s_rules, TargetXmlFilePath);
 
         var actual = overrider
             .AddOverride(FromXmlFiles)

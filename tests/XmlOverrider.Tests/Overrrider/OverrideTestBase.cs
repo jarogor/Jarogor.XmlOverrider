@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using XmlOverrider.Scheme;
 
 namespace XmlOverrider.Tests.Overrrider;
 
@@ -9,6 +10,8 @@ public abstract class OverrideTestBase
     protected static readonly string SchemeFilePath = Path.Combine(BasePath, "Rules.xsd");
     protected static readonly string TargetXmlFilePath = Path.Combine(BasePath, "test.xml");
     protected static readonly string ExpectedFilePath = Path.Combine(BasePath, "expected.xml");
+
+    protected static Rules s_rules = new(RulesFilePath, SchemeFilePath);
 
     protected static readonly List<string> FromXmlFiles = new()
     {

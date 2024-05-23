@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using XmlOverrider.Contracts;
+using XmlOverrider.Scheme;
 
 namespace XmlOverrider.Overrider;
 
@@ -17,31 +17,8 @@ public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverri
     private readonly List<string> _overrideXmlFilesPaths = new();
 
     /// <inheritdoc />
-    public FilesOverrider(
-        ILogger<FilesOverrider> logger,
-        string targetXmlFilePath,
-        string rulesFilePath,
-        string? schemeFilePath = null
-    ) : base(
-        logger,
-        rulesFilePath,
-        schemeFilePath
-    )
-    {
-        _targetXmlFilePath = SetTarget(targetXmlFilePath);
-        TargetXml.Load(_targetXmlFilePath);
-    }
-
-    /// <inheritdoc />
-    public FilesOverrider(
-        string targetXmlFilePath,
-        string rulesFilePath,
-        string? schemeFilePath = null
-    ) : base(
-        new NullLogger<FilesOverrider>(),
-        rulesFilePath,
-        schemeFilePath
-    )
+    public FilesOverrider(Rules rules, string targetXmlFilePath, ILogger<FilesOverrider>? logger = null)
+        : base(rules, logger)
     {
         _targetXmlFilePath = SetTarget(targetXmlFilePath);
         TargetXml.Load(_targetXmlFilePath);
