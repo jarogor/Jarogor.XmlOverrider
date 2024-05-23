@@ -1,14 +1,14 @@
 ﻿using NUnit.Framework;
 using XmlOverrider.Overrider;
 
-namespace XmlOverrider.Tests.Overrrider;
+namespace XmlOverrider.Tests.Overrider;
 
-public class XmlDocumentOverriderTest : OverrideTestBase
+public class StringOverriderTest : OverrideTestBase
 {
     [Test]
-    public void OverridingFromXmlDocumentSuccess()
+    public void OverridingFromStringSuccess()
     {
-        var overrider = new XmlDocumentOverrider(s_rules, LoadXml(TargetXmlFilePath));
+        var overrider = new StringOverrider(s_rules, LoadXml(TargetXmlFilePath).OuterXml);
 
         foreach (var file in FromXmlFiles)
         {

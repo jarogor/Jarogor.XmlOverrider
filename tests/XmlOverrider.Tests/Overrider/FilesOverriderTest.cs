@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using XmlOverrider.Overrider;
 
-namespace XmlOverrider.Tests.Overrrider;
+namespace XmlOverrider.Tests.Overrider;
 
 public class FilesOverriderTest : OverrideTestBase
 {

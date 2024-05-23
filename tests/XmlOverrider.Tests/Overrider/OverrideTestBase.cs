@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using XmlOverrider.Scheme;
 
-namespace XmlOverrider.Tests.Overrrider;
+namespace XmlOverrider.Tests.Overrider;
 
 public abstract class OverrideTestBase
 {
