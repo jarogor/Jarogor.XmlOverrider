@@ -8,15 +8,15 @@ using XmlOverrider.Contracts;
 
 namespace XmlOverrider.Overrider;
 
+/// <summary>
+/// Overrides for files
+/// </summary>
 public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverrider<FilesOverrider>
 {
     private readonly string _targetXmlFilePath;
     private readonly List<string> _overrideXmlFilesPaths = new();
 
-    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    /// <param name="targetXmlFilePath">Path to the xml file that needs to be overridden</param>
-    /// <param name="rulesFilePath">Path to override rules file</param>
-    /// <param name="schemeFilePath">Path to the override rules schema file</param>
+    /// <inheritdoc />
     public FilesOverrider(
         ILogger<FilesOverrider> logger,
         string targetXmlFilePath,
@@ -32,9 +32,7 @@ public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverri
         TargetXml.Load(_targetXmlFilePath);
     }
 
-    /// <param name="targetXmlFilePath">Path to the xml file that needs to be overridden</param>
-    /// <param name="rulesFilePath">Path to override rules file</param>
-    /// <param name="schemeFilePath">Path to the override rules schema file</param>
+    /// <inheritdoc />
     public FilesOverrider(
         string targetXmlFilePath,
         string rulesFilePath,
@@ -49,8 +47,10 @@ public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverri
         TargetXml.Load(_targetXmlFilePath);
     }
 
+    /// <inheritdoc />
     protected override XmlDocument TargetXml { get; set; } = new();
 
+    /// <inheritdoc />
     public override FilesOverrider Processing()
     {
         foreach (var fromXmlPath in _overrideXmlFilesPaths)
@@ -64,11 +64,13 @@ public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverri
         return this;
     }
 
+    /// <inheritdoc />
     public void Save()
     {
         TargetXml.Save(_targetXmlFilePath);
     }
 
+    /// <inheritdoc />
     public FilesOverrider AddOverride(string filePath)
     {
         if (!File.Exists(filePath))
@@ -80,6 +82,7 @@ public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverri
         return this;
     }
 
+    /// <inheritdoc />
     public FilesOverrider AddOverride(List<string> filePaths)
     {
         var notExists = filePaths.Where(filePath => !File.Exists(filePath)).ToList();

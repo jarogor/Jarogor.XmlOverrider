@@ -7,14 +7,14 @@ using XmlOverrider.Contracts;
 
 namespace XmlOverrider.Overrider;
 
+/// <summary>
+/// Overrides for xml
+/// </summary>
 public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IStringOverrider<XmlDocumentOverrider>
 {
     private readonly List<XmlDocument> _overridingXmlDocuments = new();
 
-    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    /// <param name="xml">The xml that needs to be overridden</param>
-    /// <param name="rulesFilePath">Path to override rules file</param>
-    /// <param name="schemeFilePath">Path to the override rules schema file</param>
+    /// <inheritdoc />
     public XmlDocumentOverrider(
         ILogger<XmlDocumentOverrider> logger,
         XmlDocument xml,
@@ -29,10 +29,7 @@ public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IString
         TargetXml = xml;
     }
 
-    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    /// <param name="xml">The xml file that needs to be overridden</param>
-    /// <param name="rulesStream">Override rules stream</param>
-    /// <param name="schemeStream">Override rules schema stream</param>
+    /// <inheritdoc />
     public XmlDocumentOverrider(
         ILogger<XmlDocumentOverrider> logger,
         XmlDocument xml,
@@ -79,8 +76,10 @@ public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IString
         TargetXml = xml;
     }
 
+    /// <inheritdoc />
     protected sealed override XmlDocument TargetXml { get; set; }
 
+    /// <inheritdoc />
     public override XmlDocumentOverrider Processing()
     {
         for (var index = 0; index < _overridingXmlDocuments.Count; index++)
@@ -92,6 +91,7 @@ public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IString
         return this;
     }
 
+    /// <inheritdoc />
     public XmlDocumentOverrider AddOverride(XmlDocument overridingXmlDocument)
     {
         _overridingXmlDocuments.Add(overridingXmlDocument);

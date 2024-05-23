@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace XmlOverrider.Overrider;
 
+/// <summary>
+/// Overrides for xml string
+/// </summary>
 public class StringOverrider : XmlDocumentOverrider
 {
-    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    /// <param name="xml">The xml that needs to be overridden</param>
-    /// <param name="rulesFilePath">Path to override rules file</param>
-    /// <param name="schemeFilePath">Path to the override rules schema file</param>
+    /// <inheritdoc />
     public StringOverrider(
         ILogger<StringOverrider> logger,
         string xml,
@@ -25,10 +25,7 @@ public class StringOverrider : XmlDocumentOverrider
     {
     }
 
-    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    /// <param name="xml">The xml that needs to be overridden</param>
-    /// <param name="rulesStream">Override rules stream</param>
-    /// <param name="schemeStream">Override rules schema stream</param>
+    /// <inheritdoc />
     public StringOverrider(
         ILogger<StringOverrider> logger,
         string xml,
@@ -43,9 +40,7 @@ public class StringOverrider : XmlDocumentOverrider
     {
     }
 
-    /// <param name="xml">The xml that needs to be overridden</param>
-    /// <param name="rulesFilePath">Path to override rules file</param>
-    /// <param name="schemeFilePath">Path to the override rules schema file</param>
+    /// <inheritdoc />
     public StringOverrider(
         string xml,
         string rulesFilePath,
@@ -59,9 +54,7 @@ public class StringOverrider : XmlDocumentOverrider
     {
     }
 
-    /// <param name="xml">The xml that needs to be overridden</param>
-    /// <param name="rulesStream">Override rules stream</param>
-    /// <param name="schemeStream">Override rules schema stream</param>
+    /// <inheritdoc />
     public StringOverrider(
         string xml,
         TextReader rulesStream,
