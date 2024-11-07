@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
+using Jarogor.XmlOverrider.Contracts;
+using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
-using XmlOverrider.Contracts;
-using XmlOverrider.Scheme;
 
-namespace XmlOverrider.Overrider;
+namespace Jarogor.XmlOverrider.Overrider;
 
 /// <summary>
 ///     Overrides for xml

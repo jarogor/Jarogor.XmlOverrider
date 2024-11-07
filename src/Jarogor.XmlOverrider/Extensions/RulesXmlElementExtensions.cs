@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace XmlOverrider.Extensions;
+namespace Jarogor.XmlOverrider.Extensions;
 
 public static class RulesXmlElementExtensions {
     private const string Name = "name";

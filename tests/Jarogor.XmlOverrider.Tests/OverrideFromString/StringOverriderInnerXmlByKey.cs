@@ -1,18 +1,18 @@
 ﻿using System.Xml;
 using NUnit.Framework;
-using XmlOverrider.Overrider;
-using XmlOverrider.Scheme;
+using Jarogor.XmlOverrider.Overrider;
+using Jarogor.XmlOverrider.Scheme;
 
-namespace XmlOverrider.Tests.OverrideFromString;
+namespace Jarogor.XmlOverrider.Tests.OverrideFromString;
 
 [TestFixture]
-public class StringOverriderInnerXmlByKeyAndValue {
+public class StringOverriderInnerXmlByKey {
     private const string RulesXml =
         """
         <?xml version="1.0" encoding="utf-8"?>
         <overrideRules>
-            <node name="section-a">
-                <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
+            <node name="section-b">
+                <node name="item" attributeIdName="key" override="innerXml"/>
             </node>
         </overrideRules>
         """;
@@ -21,14 +21,14 @@ public class StringOverriderInnerXmlByKeyAndValue {
         """
         <?xml version="1.0" encoding="utf-8"?>
         <root>
-            <section-a>
+            <section-b>
                 <item key="a">
                     <a a="a"/>
                 </item>
                 <item key="b">
                     <a a="a"/>
                 </item>
-            </section-a>
+            </section-b>
         </root>
         """;
 
@@ -36,32 +36,18 @@ public class StringOverriderInnerXmlByKeyAndValue {
         """
         <?xml version="1.0" encoding="utf-8"?>
         <root>
-            <section-a>
+            <section-b>
                 <item key="a">
                     <new name="new"/>
                 </item>
                 <item key="b">
                     <new name="new"/>
                 </item>
-            </section-a>
+            </section-b>
         </root>
         """;
 
-    private const string ExpectedXml =
-        """
-        <?xml version="1.0" encoding="utf-8"?>
-        <root>
-            <section-a>
-                <item key="a">
-                    <a a="a"/>
-                </item>
-                <item key="b">
-                    <new name="new"/>
-                </item>
-            </section-a>
-        </root>
-        """;
-
+    private const string ExpectedXml = OverridingXml;
     private static readonly string BasePath = Path.Combine(Environment.CurrentDirectory, "data");
     private static readonly string SchemeFilePath = Path.Combine(BasePath, "Rules.xsd");
 

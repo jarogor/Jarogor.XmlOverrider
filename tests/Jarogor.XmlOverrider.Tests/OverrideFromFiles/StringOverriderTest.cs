@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using XmlOverrider.Overrider;
+using Jarogor.XmlOverrider.Overrider;
 
-namespace XmlOverrider.Tests.OverrideFromFiles;
+namespace Jarogor.XmlOverrider.Tests.OverrideFromFiles;
 
 [TestFixture]
 public class StringOverriderTest : TestBase {

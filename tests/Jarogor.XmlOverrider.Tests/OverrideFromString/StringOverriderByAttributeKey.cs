@@ -1,18 +1,20 @@
 ﻿using System.Xml;
 using NUnit.Framework;
-using XmlOverrider.Overrider;
-using XmlOverrider.Scheme;
+using Jarogor.XmlOverrider.Overrider;
+using Jarogor.XmlOverrider.Scheme;
 
-namespace XmlOverrider.Tests.OverrideFromString;
+namespace Jarogor.XmlOverrider.Tests.OverrideFromString;
 
 [TestFixture]
-public class StringOverriderInnerXmlByKey {
+public class StringOverriderByAttributeKey {
     private const string RulesXml =
         """
         <?xml version="1.0" encoding="utf-8"?>
         <overrideRules>
-            <node name="section-b">
-                <node name="item" attributeIdName="key" override="innerXml"/>
+            <node name="section-c">
+                <node name="item" attributeIdName="key" override="attributes">
+                    <attribute name="value"/>
+                </node>
             </node>
         </overrideRules>
         """;
@@ -21,14 +23,9 @@ public class StringOverriderInnerXmlByKey {
         """
         <?xml version="1.0" encoding="utf-8"?>
         <root>
-            <section-b>
-                <item key="a">
-                    <a a="a"/>
-                </item>
-                <item key="b">
-                    <a a="a"/>
-                </item>
-            </section-b>
+            <section-c>
+                <item key="a" value="1"/>
+            </section-c>
         </root>
         """;
 
@@ -36,14 +33,9 @@ public class StringOverriderInnerXmlByKey {
         """
         <?xml version="1.0" encoding="utf-8"?>
         <root>
-            <section-b>
-                <item key="a">
-                    <new name="new"/>
-                </item>
-                <item key="b">
-                    <new name="new"/>
-                </item>
-            </section-b>
+            <section-c>
+                <item key="a" value="new"/>
+            </section-c>
         </root>
         """;
 

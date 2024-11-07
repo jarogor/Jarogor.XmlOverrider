@@ -1,7 +1,7 @@
 ﻿using System.Xml;
-using XmlOverrider.Scheme;
+using Jarogor.XmlOverrider.Scheme;
 
-namespace XmlOverrider.Tests.OverrideFromFiles;
+namespace Jarogor.XmlOverrider.Tests.OverrideFromFiles;
 
 public abstract class TestBase {
     private static readonly string BasePath = Path.Combine(Environment.CurrentDirectory, "data");

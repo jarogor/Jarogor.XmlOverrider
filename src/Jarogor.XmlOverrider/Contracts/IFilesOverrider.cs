@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace XmlOverrider.Contracts;
+namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
 ///     Overrides for files

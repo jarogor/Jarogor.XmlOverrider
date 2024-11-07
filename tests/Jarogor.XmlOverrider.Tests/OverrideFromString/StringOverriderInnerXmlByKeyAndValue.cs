@@ -1,20 +1,18 @@
 ﻿using System.Xml;
 using NUnit.Framework;
-using XmlOverrider.Overrider;
-using XmlOverrider.Scheme;
+using Jarogor.XmlOverrider.Overrider;
+using Jarogor.XmlOverrider.Scheme;
 
-namespace XmlOverrider.Tests.OverrideFromString;
+namespace Jarogor.XmlOverrider.Tests.OverrideFromString;
 
 [TestFixture]
-public class StringOverriderByAttributeKey {
+public class StringOverriderInnerXmlByKeyAndValue {
     private const string RulesXml =
         """
         <?xml version="1.0" encoding="utf-8"?>
         <overrideRules>
-            <node name="section-c">
-                <node name="item" attributeIdName="key" override="attributes">
-                    <attribute name="value"/>
-                </node>
+            <node name="section-a">
+                <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
             </node>
         </overrideRules>
         """;
@@ -23,9 +21,14 @@ public class StringOverriderByAttributeKey {
         """
         <?xml version="1.0" encoding="utf-8"?>
         <root>
-            <section-c>
-                <item key="a" value="1"/>
-            </section-c>
+            <section-a>
+                <item key="a">
+                    <a a="a"/>
+                </item>
+                <item key="b">
+                    <a a="a"/>
+                </item>
+            </section-a>
         </root>
         """;
 
@@ -33,13 +36,32 @@ public class StringOverriderByAttributeKey {
         """
         <?xml version="1.0" encoding="utf-8"?>
         <root>
-            <section-c>
-                <item key="a" value="new"/>
-            </section-c>
+            <section-a>
+                <item key="a">
+                    <new name="new"/>
+                </item>
+                <item key="b">
+                    <new name="new"/>
+                </item>
+            </section-a>
         </root>
         """;
 
-    private const string ExpectedXml = OverridingXml;
+    private const string ExpectedXml =
+        """
+        <?xml version="1.0" encoding="utf-8"?>
+        <root>
+            <section-a>
+                <item key="a">
+                    <a a="a"/>
+                </item>
+                <item key="b">
+                    <new name="new"/>
+                </item>
+            </section-a>
+        </root>
+        """;
+
     private static readonly string BasePath = Path.Combine(Environment.CurrentDirectory, "data");
     private static readonly string SchemeFilePath = Path.Combine(BasePath, "Rules.xsd");
 

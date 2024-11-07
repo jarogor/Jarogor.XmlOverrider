@@ -1,8 +1,8 @@
 using System.Xml;
 using NUnit.Framework;
-using XmlOverrider.Extensions;
+using Jarogor.XmlOverrider.Extensions;
 
-namespace XmlOverrider.Tests;
+namespace Jarogor.XmlOverrider.Tests;
 
 [TestFixture]
 public class RulesExtensionsTest {

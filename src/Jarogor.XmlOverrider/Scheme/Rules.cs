@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 
-namespace XmlOverrider.Scheme;
+namespace Jarogor.XmlOverrider.Scheme;
 
 /// <summary>
 ///     Override rules

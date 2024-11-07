@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace XmlOverrider.Contracts;
+namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
 ///     Overrides for xml string

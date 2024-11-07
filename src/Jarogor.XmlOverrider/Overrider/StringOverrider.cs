@@ -1,8 +1,8 @@
 ﻿using System.Xml;
+using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
-using XmlOverrider.Scheme;
 
-namespace XmlOverrider.Overrider;
+namespace Jarogor.XmlOverrider.Overrider;
 
 /// <summary>
 ///     Overrides for xml string

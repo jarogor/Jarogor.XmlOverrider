@@ -1,9 +1,9 @@
 using System.Xml;
+using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using XmlOverrider.Scheme;
 
-namespace XmlOverrider.Contracts;
+namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
 ///     Base overriding logic
