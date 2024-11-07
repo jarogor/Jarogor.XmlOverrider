@@ -1,13 +1,11 @@
 using System.Xml;
-
 using NUnit.Framework;
-
 using XmlOverrider.Extensions;
 
 namespace XmlOverrider.Tests;
 
-public class RulesExtensionsTest
-{
+[TestFixture]
+public class RulesExtensionsTest {
     private const string Xml
         = """
           <node name="foo"
@@ -18,15 +16,13 @@ public class RulesExtensionsTest
           """;
 
     [Test]
-    public void OverridingRulesExtensionsTest()
-    {
+    public void OverridingRulesExtensionsTest() {
         var xml = new XmlDocument();
         xml.LoadXml(Xml);
 
         var element = xml.DocumentElement;
 
-        Assert.Multiple(() =>
-        {
+        Assert.Multiple(() => {
             Assert.That(element!.IsAttributeElement(), Is.False);
             Assert.That(element!.IsElementType(), Is.True);
             Assert.That(element!.GetAttributeIdName(), Is.EqualTo("bar"));
