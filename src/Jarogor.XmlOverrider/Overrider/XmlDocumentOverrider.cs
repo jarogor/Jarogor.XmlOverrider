@@ -3,6 +3,7 @@ using System.Xml;
 using Jarogor.XmlOverrider.Contracts;
 using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Jarogor.XmlOverrider.Overrider;
 
@@ -14,7 +15,7 @@ public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IString
 
     /// <inheritdoc />
     public XmlDocumentOverrider(Rules rules, XmlDocument xml, ILogger<XmlDocumentOverrider>? logger = null)
-        : base(rules, logger) {
+        : base(rules, logger ?? new NullLogger<XmlDocumentOverrider>()) {
         TargetXml = xml;
     }
 

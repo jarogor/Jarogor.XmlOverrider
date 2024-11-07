@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using Jarogor.XmlOverrider.Extensions;
 using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Jarogor.XmlOverrider.Extensions;
 
 namespace Jarogor.XmlOverrider;
 
@@ -15,8 +14,8 @@ internal sealed class Overriding<T> {
     private readonly XmlElement _rules;
     private readonly XmlElement _target;
 
-    public Overriding(Rules rules, XmlDocument from, XmlDocument target, ILogger<T>? logger = null) {
-        _logger = logger ?? new NullLogger<T>();
+    public Overriding(Rules rules, XmlDocument from, XmlDocument target, ILogger<T> logger) {
+        _logger = logger;
         _rules = rules.XmlDocument.DocumentElement ?? throw new InvalidOperationException("rules xml");
         _from = from.DocumentElement ?? throw new InvalidOperationException("from xml");
         _target = target.DocumentElement ?? throw new InvalidOperationException("target xml");

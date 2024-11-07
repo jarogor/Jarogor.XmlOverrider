@@ -17,9 +17,9 @@ public abstract class OverriderBase<T> {
     /// </summary>
     /// <param name="rules">Overriding rules</param>
     /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    protected OverriderBase(Rules rules, ILogger<T>? logger = null) {
+    protected OverriderBase(Rules rules, ILogger<T> logger) {
         _rules = rules;
-        Logger = logger ?? new NullLogger<T>();
+        Logger = logger;
     }
 
     /// <summary>

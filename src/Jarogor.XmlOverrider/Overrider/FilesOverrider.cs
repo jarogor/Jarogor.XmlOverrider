@@ -5,6 +5,7 @@ using System.Xml;
 using Jarogor.XmlOverrider.Contracts;
 using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Jarogor.XmlOverrider.Overrider;
 
@@ -17,7 +18,7 @@ public sealed class FilesOverrider : OverriderBase<FilesOverrider>, IFilesOverri
 
     /// <inheritdoc />
     public FilesOverrider(Rules rules, string targetXmlFilePath, ILogger<FilesOverrider>? logger = null)
-        : base(rules, logger) {
+        : base(rules, logger ?? new NullLogger<FilesOverrider>()) {
         _targetXmlFilePath = SetTarget(targetXmlFilePath);
         TargetXml.Load(_targetXmlFilePath);
     }
