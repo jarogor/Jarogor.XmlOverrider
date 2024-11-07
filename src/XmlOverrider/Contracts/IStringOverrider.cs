@@ -3,13 +3,12 @@
 namespace XmlOverrider.Contracts;
 
 /// <summary>
-/// Overrides for xml string
+///     Overrides for xml string
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IStringOverrider<out T>
-{
+public interface IStringOverrider<out T> {
     /// <summary>
-    /// Adding an override xml
+    ///     Adding an override xml
     /// </summary>
     /// <param name="overridingXmlDocument"></param>
     /// <returns></returns>

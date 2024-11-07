@@ -7,16 +7,14 @@ using XmlOverrider.Scheme;
 namespace XmlOverrider.Overrider;
 
 /// <summary>
-/// Overrides for xml
+///     Overrides for xml
 /// </summary>
-public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IStringOverrider<XmlDocumentOverrider>
-{
+public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IStringOverrider<XmlDocumentOverrider> {
     private readonly List<XmlDocument> _overridingXmlDocuments = new();
 
     /// <inheritdoc />
     public XmlDocumentOverrider(Rules rules, XmlDocument xml, ILogger<XmlDocumentOverrider>? logger = null)
-        : base(rules, logger)
-    {
+        : base(rules, logger) {
         TargetXml = xml;
     }
 
@@ -24,21 +22,18 @@ public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IString
     protected sealed override XmlDocument TargetXml { get; set; }
 
     /// <inheritdoc />
-    public override XmlDocumentOverrider Processing()
-    {
-        for (var index = 0; index < _overridingXmlDocuments.Count; index++)
-        {
-            Logger.LogDebug("Processing {0}", index);
-            Processing(_overridingXmlDocuments[index]);
-        }
-
+    public XmlDocumentOverrider AddOverride(XmlDocument overridingXmlDocument) {
+        _overridingXmlDocuments.Add(overridingXmlDocument);
         return this;
     }
 
     /// <inheritdoc />
-    public XmlDocumentOverrider AddOverride(XmlDocument overridingXmlDocument)
-    {
-        _overridingXmlDocuments.Add(overridingXmlDocument);
+    public override XmlDocumentOverrider Processing() {
+        for (var index = 0; index < _overridingXmlDocuments.Count; index++) {
+            Logger.LogDebug("Processing {0}", index);
+            Processing(_overridingXmlDocuments[index]);
+        }
+
         return this;
     }
 }

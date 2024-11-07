@@ -6,25 +6,21 @@ using System.Xml.Schema;
 namespace XmlOverrider.Scheme;
 
 /// <summary>
-/// Override rules
+///     Override rules
 /// </summary>
-public sealed class Rules
-{
+public sealed class Rules {
     /// <summary>
-    /// 
     /// </summary>
     public readonly XmlDocument XmlDocument = new();
 
     /// <summary>
-    /// Constructor
+    ///     Constructor
     /// </summary>
     /// <param name="rulesFilePath">Path to override rules file</param>
     /// <param name="xsdFilePath">Path to the override rules schema file</param>
     /// <exception cref="FileNotFoundException"></exception>
-    public Rules(string rulesFilePath, string? xsdFilePath = null)
-    {
-        if (!File.Exists(rulesFilePath))
-        {
+    public Rules(string rulesFilePath, string? xsdFilePath = null) {
+        if (!File.Exists(rulesFilePath)) {
             throw new FileNotFoundException($"Rules xml file does not exist: [{rulesFilePath}]");
         }
 
@@ -35,19 +31,16 @@ public sealed class Rules
     }
 
     /// <summary>
-    /// Constructor
+    ///     Constructor
     /// </summary>
     /// <param name="rulesStream">Override rules stream</param>
     /// <param name="xsdStream">Override rules schema stream</param>
-    public Rules(TextReader rulesStream, TextReader? xsdStream = null)
-    {
-        var xsdFilePath = XsdFilePath();
-        xsdStream ??= new StreamReader(File.OpenRead(xsdFilePath));
+    public Rules(TextReader rulesStream, TextReader? xsdStream = null) {
+        xsdStream ??= new StreamReader(File.OpenRead(XsdFilePath()));
         LoadAndValidate(rulesStream, xsdStream);
     }
 
-    private void LoadAndValidate(TextReader rulesStream, TextReader xsdStream)
-    {
+    private void LoadAndValidate(TextReader rulesStream, TextReader xsdStream) {
         var schemaDocument = XmlReader.Create(xsdStream);
         var schemas = new XmlSchemaSet();
         schemas.Add(string.Empty, schemaDocument);
@@ -61,11 +54,9 @@ public sealed class Rules
         XmlDocument.Validate((_, e) => throw e.Exception);
     }
 
-    private static string XsdFilePath()
-    {
+    private static string XsdFilePath() {
         var xsdFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Rules.xsd");
-        if (!File.Exists(xsdFilePath))
-        {
+        if (!File.Exists(xsdFilePath)) {
             throw new FileNotFoundException($"XSD scheme file does not exist: [{xsdFilePath}]");
         }
 

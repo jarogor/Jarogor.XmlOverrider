@@ -3,19 +3,15 @@ using XmlOverrider.Extensions;
 
 namespace XmlOverrider;
 
-internal static class LogHelper
-{
-    public static string Message(XmlElement element, XmlElement rules)
-    {
+internal static class LogHelper {
+    public static string Message(XmlElement element, XmlElement rules) {
         var key = rules.GetAttributeIdName();
 
         return $"{XPath(element)}[@{key}='{element.GetAttribute(key)}']";
     }
 
-    private static string XPath(XmlNode node)
-    {
-        if (node.NodeType != XmlNodeType.Attribute)
-        {
+    private static string XPath(XmlNode node) {
+        if (node.NodeType != XmlNodeType.Attribute) {
             return GetPath(node);
         }
 

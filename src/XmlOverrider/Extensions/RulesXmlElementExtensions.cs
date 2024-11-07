@@ -2,8 +2,7 @@ using System.Xml;
 
 namespace XmlOverrider.Extensions;
 
-public static class RulesXmlElementExtensions
-{
+public static class RulesXmlElementExtensions {
     private const string Name = "name";
 
     private const string TypeAttribute = "attribute";
@@ -15,47 +14,29 @@ public static class RulesXmlElementExtensions
     private const string OverrideInnerXml = "innerXml";
 
     public static string GetElementName(this XmlElement element)
-    {
-        return element.GetAttribute(Name);
-    }
+        => element.GetAttribute(Name);
 
     public static bool IsOverridable(this XmlElement element)
-    {
-        return element.HasAttribute(AttributeOverride);
-    }
+        => element.HasAttribute(AttributeOverride);
 
     public static bool IsOverrideInnerXml(this XmlElement element)
-    {
-        return element.Attributes[AttributeOverride]?.Value == OverrideInnerXml;
-    }
+        => element.Attributes[AttributeOverride]?.Value == OverrideInnerXml;
 
     public static bool IsAttributeElement(this XmlElement element)
-    {
-        return element.LocalName == TypeAttribute;
-    }
+        => element.LocalName == TypeAttribute;
 
     public static bool IsElementType(this XmlElement element)
-    {
-        return element.LocalName != TypeAttribute;
-    }
+        => element.LocalName != TypeAttribute;
 
     public static bool HasAttributeIdName(this XmlElement element)
-    {
-        return element.HasAttribute(AttributeIdKey);
-    }
+        => element.HasAttribute(AttributeIdKey);
 
     public static string GetAttributeIdName(this XmlElement element)
-    {
-        return element.GetAttribute(AttributeIdKey);
-    }
+        => element.GetAttribute(AttributeIdKey);
 
     public static bool HasAttributeIdValue(this XmlElement element)
-    {
-        return element.HasAttribute(AttributeIdValue);
-    }
+        => element.HasAttribute(AttributeIdValue);
 
     public static string GetAttributeIdValue(this XmlElement element)
-    {
-        return element.GetAttribute(AttributeIdValue);
-    }
+        => element.GetAttribute(AttributeIdValue);
 }
