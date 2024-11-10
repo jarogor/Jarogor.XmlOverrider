@@ -10,6 +10,7 @@ namespace Jarogor.XmlOverrider.Scheme;
 /// </summary>
 public sealed class Rules {
     /// <summary>
+    ///     Override rules
     /// </summary>
     public readonly XmlDocument XmlDocument = new();
 

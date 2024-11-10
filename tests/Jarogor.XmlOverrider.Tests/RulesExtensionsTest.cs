@@ -1,6 +1,6 @@
 using System.Xml;
-using NUnit.Framework;
 using Jarogor.XmlOverrider.Extensions;
+using NUnit.Framework;
 
 namespace Jarogor.XmlOverrider.Tests;
 

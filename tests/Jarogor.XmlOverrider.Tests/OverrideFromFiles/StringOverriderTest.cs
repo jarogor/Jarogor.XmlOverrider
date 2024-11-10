@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Jarogor.XmlOverrider.Overrider;
+﻿using Jarogor.XmlOverrider.Overrider;
+using NUnit.Framework;
 
 namespace Jarogor.XmlOverrider.Tests.OverrideFromFiles;
 
