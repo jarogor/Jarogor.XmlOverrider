@@ -41,7 +41,7 @@ public sealed class Rules {
     }
 
     private void LoadAndValidate(TextReader rulesStream, TextReader xsdStream) {
-        var schemaDocument = XmlReader.Create(xsdStream);
+        using var schemaDocument = XmlReader.Create(xsdStream);
         var schemas = new XmlSchemaSet();
         schemas.Add(string.Empty, schemaDocument);
 
@@ -49,7 +49,7 @@ public sealed class Rules {
         settings.Schemas.Add(schemas);
         settings.ValidationType = ValidationType.Schema;
 
-        var reader = XmlReader.Create(rulesStream, settings);
+        using var reader = XmlReader.Create(rulesStream, settings);
         XmlDocument.Load(reader);
         XmlDocument.Validate((_, e) => throw e.Exception);
     }
