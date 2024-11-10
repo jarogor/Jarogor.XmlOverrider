@@ -10,7 +10,7 @@ namespace Jarogor.XmlOverrider.Overrider;
 /// <summary>
 ///     Overrides for xml
 /// </summary>
-public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IStringOverrider<XmlDocumentOverrider> {
+public class XmlDocumentOverrider : XmlDocumentOverriderBase<XmlDocumentOverrider> {
     private readonly List<XmlDocument> _overridingXmlDocuments = new();
 
     /// <inheritdoc />
@@ -23,7 +23,7 @@ public class XmlDocumentOverrider : OverriderBase<XmlDocumentOverrider>, IString
     protected sealed override XmlDocument TargetXml { get; set; }
 
     /// <inheritdoc />
-    public XmlDocumentOverrider AddOverride(XmlDocument overridingXmlDocument) {
+    public override XmlDocumentOverrider AddOverride(XmlDocument overridingXmlDocument) {
         _overridingXmlDocuments.Add(overridingXmlDocument);
         return this;
     }

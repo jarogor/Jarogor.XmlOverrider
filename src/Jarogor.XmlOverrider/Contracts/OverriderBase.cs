@@ -1,7 +1,6 @@
 using System.Xml;
 using Jarogor.XmlOverrider.Scheme;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Jarogor.XmlOverrider.Contracts;
 

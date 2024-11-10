@@ -8,7 +8,7 @@ namespace Jarogor.XmlOverrider.Overrider;
 /// <summary>
 ///     Overrides for xml string
 /// </summary>
-public class StringOverrider : XmlDocumentOverrider {
+public sealed class StringOverrider : XmlDocumentOverrider {
     /// <inheritdoc />
     public StringOverrider(Rules rules, string xml, ILogger<StringOverrider>? logger = null)
         : base(rules, XmlToDocument(xml), logger ?? new NullLogger<StringOverrider>()) { }
