@@ -14,11 +14,6 @@ public sealed class Rules {
     /// </summary>
     public readonly XmlDocument XmlDocument = new();
 
-    /// <param name="rulesStream">Override rules stream</param>
-    /// <param name="xsdStream">Override rules schema stream</param>
-    public static Rules Create(TextReader rulesStream, TextReader? xsdStream = null)
-        => new(rulesStream, xsdStream ?? new StreamReader(File.OpenRead(XsdFilePath())));
-
     private Rules(TextReader rulesStream, TextReader xsdStream) {
         using var schemaDocument = XmlReader.Create(xsdStream);
         var schemas = new XmlSchemaSet();
@@ -33,16 +28,14 @@ public sealed class Rules {
         XmlDocument.Validate((_, e) => throw e.Exception);
     }
 
-    private static string FilePathValidate(string rulesFilePath) {
-        if (!File.Exists(rulesFilePath)) {
-            throw new FileNotFoundException($"Rules xml file does not exist: [{rulesFilePath}]");
-        }
-
-        return rulesFilePath;
-    }
+    /// <param name="rulesStream">Override rules stream</param>
+    /// <param name="xsdStream">Override rules schema stream</param>
+    public static Rules Create(TextReader rulesStream, TextReader? xsdStream = null)
+        => new(rulesStream, xsdStream ?? new StreamReader(File.OpenRead(XsdFilePath())));
 
     private static string XsdFilePath() {
         var xsdFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Rules.xsd");
+
         if (!File.Exists(xsdFilePath)) {
             throw new FileNotFoundException($"XSD scheme file does not exist: [{xsdFilePath}]");
         }

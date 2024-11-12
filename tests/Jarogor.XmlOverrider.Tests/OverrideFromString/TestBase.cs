@@ -10,10 +10,9 @@ public abstract class TestBase {
 
     protected abstract string RulesXml { get; }
 
-    protected Rules Rules() {
-        return Scheme.Rules.Create(
+    protected Rules Rules()
+        => Scheme.Rules.Create(
             new StringReader(RulesXml),
             new StreamReader(File.OpenRead(SchemeFilePath))
         );
-    }
 }
