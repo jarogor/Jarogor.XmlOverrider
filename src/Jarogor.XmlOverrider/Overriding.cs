@@ -9,99 +9,131 @@ using Microsoft.Extensions.Logging;
 namespace Jarogor.XmlOverrider;
 
 internal sealed class Overriding<T> {
-    private readonly XmlElement _from;
+    private readonly XmlElement _override;
     private readonly ILogger<T> _logger;
     private readonly XmlElement _rules;
     private readonly XmlElement _target;
 
-    public Overriding(Rules rules, XmlDocument from, XmlDocument target, ILogger<T> logger) {
+    public Overriding(
+        Rules rules,
+        XmlDocument @override,
+        XmlDocument target,
+        ILogger<T> logger
+    ) {
         _logger = logger;
         _rules = rules.XmlDocument.DocumentElement ?? throw new InvalidOperationException("rules xml");
-        _from = from.DocumentElement ?? throw new InvalidOperationException("from xml");
+        _override = @override.DocumentElement ?? throw new InvalidOperationException("override xml");
         _target = target.DocumentElement ?? throw new InvalidOperationException("target xml");
     }
 
     public void Processing()
-        => ProcessingRecursive(_rules, _from, _target);
+        => ProcessingRecursive(_rules, _override, _target);
 
-    private void ProcessingRecursive(XmlNode rules, XmlNode from, XmlNode target) {
-        if (!rules.HasChildNodes || !from.HasChildNodes) {
+    private void ProcessingRecursive(
+        XmlNode rules,
+        XmlNode @override,
+        XmlNode target
+    ) {
+        if (!rules.HasChildNodes || !@override.HasChildNodes) {
             return;
         }
 
         foreach (var rulesChildNode in rules.ChildNodes.OfType<XmlElement>()) {
             var name = rulesChildNode.GetElementName();
-            if (from[name] == null) {
+            if (@override[name] == null) {
                 continue;
             }
 
-            ProcessingChilds(rulesChildNode, from, target);
+            ProcessingChildren(rulesChildNode, @override, target);
         }
     }
 
-    private void ProcessingChilds(XmlElement rules, XmlNode from, XmlNode target) {
-        foreach (var fromChild in from.ChildNodes.OfType<XmlElement>()) {
-            if (fromChild.NodeType != XmlNodeType.Element) {
+    private void ProcessingChildren(
+        XmlElement rules,
+        XmlNode @override,
+        XmlNode target
+    ) {
+        foreach (var overrideChild in @override.ChildNodes.OfType<XmlElement>()) {
+            if (overrideChild.NodeType != XmlNodeType.Element) {
                 continue;
             }
 
             foreach (var targetChild in target.ChildNodes.OfType<XmlElement>()) {
-                ProcessingChild(rules, target, fromChild, targetChild);
+                ProcessingChild(rules, target, overrideChild, targetChild);
             }
         }
     }
 
-    private void ProcessingChild(XmlElement rules, XmlNode target, XmlElement fromChild, XmlElement targetChild) {
-        if (!IsElementNamesEquals(rules, fromChild, targetChild)) {
+    private void ProcessingChild(
+        XmlElement rules,
+        XmlNode target,
+        XmlElement overrideChild,
+        XmlElement targetChild
+    ) {
+        if (!IsElementNamesEquals(rules, overrideChild, targetChild)) {
             return;
         }
 
-        if (rules.IsOverridable() && IsAttributeIdsEquals(rules, fromChild, targetChild)) {
+        if (rules.IsOverridable() && IsAttributeIdsEquals(rules, overrideChild, targetChild)) {
             if (rules.IsOverrideInnerXml()) {
-                ReplaceChildren(target, fromChild, targetChild);
-                _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(fromChild, rules));
+                ReplaceChildren(target, overrideChild, targetChild);
+                _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(overrideChild, rules));
                 return;
             }
 
-            OverrideAttributes(rules, fromChild, targetChild.Attributes);
+            OverrideAttributes(rules, overrideChild, targetChild.Attributes);
         }
 
-        ProcessingRecursive(rules, fromChild, targetChild);
+        ProcessingRecursive(rules, overrideChild, targetChild);
     }
 
-    private static void ReplaceChildren(XmlNode parent, XmlNode newChild, XmlNode oldChild) {
+    private static void ReplaceChildren(
+        XmlNode parent,
+        XmlNode newChild,
+        XmlNode oldChild
+    ) {
         if (parent.OwnerDocument == null) {
             return;
         }
 
         var newNode = parent.OwnerDocument.ImportNode(newChild, true);
+
         parent.ReplaceChild(newNode, oldChild);
     }
 
-    private void OverrideAttributes(XmlElement rules, XmlElement from, XmlAttributeCollection targetAttributes) {
+    private void OverrideAttributes(
+        XmlElement rules,
+        XmlElement @override,
+        XmlAttributeCollection targetAttributes
+    ) {
         foreach (var rulesAttrName in RulesAttributeNames(rules)) {
-            foreach (XmlAttribute fromAttribute in from.Attributes) {
-                if (rulesAttrName != fromAttribute.LocalName) {
+            foreach (XmlAttribute overrideAttribute in @override.Attributes) {
+                if (rulesAttrName != overrideAttribute.LocalName) {
                     continue;
                 }
 
-                OverrideAttribute(rules, from, targetAttributes, fromAttribute);
+                OverrideAttribute(rules, @override, targetAttributes, overrideAttribute);
             }
         }
     }
 
-    private void OverrideAttribute(XmlElement rules, XmlElement from, XmlAttributeCollection targetAttributes, XmlAttribute fromAttribute) {
+    private void OverrideAttribute(
+        XmlElement rules,
+        XmlElement @override,
+        XmlAttributeCollection targetAttributes,
+        XmlAttribute overrideAttribute
+    ) {
         foreach (XmlAttribute targetAttribute in targetAttributes) {
-            if (targetAttribute.LocalName != fromAttribute.LocalName) {
+            if (targetAttribute.LocalName != overrideAttribute.LocalName) {
                 continue;
             }
 
-            if (targetAttribute.Value == fromAttribute.Value) {
+            if (targetAttribute.Value == overrideAttribute.Value) {
                 continue;
             }
 
-            _logger.LogInformation("Attributes on the element: {0}", LogHelper.Message(from, rules));
-            targetAttribute.Value = fromAttribute.Value;
+            _logger.LogInformation("Attributes on the element: {0}", LogHelper.Message(@override, rules));
+            targetAttribute.Value = overrideAttribute.Value;
         }
     }
 
@@ -111,32 +143,41 @@ internal sealed class Overriding<T> {
             .Where(it => it.IsAttributeElement())
             .Select(it => it.GetElementName());
 
-    private static bool IsElementNamesEquals(XmlElement rules, XmlNode from, XmlNode target) {
+    private static bool IsElementNamesEquals(
+        XmlElement rules,
+        XmlNode @override,
+        XmlNode target
+    ) {
         if (!rules.IsElementType()) {
             return false;
         }
 
         var name = rules.GetElementName();
 
-        return IsElementFound(from, name) && IsElementFound(target, name);
+        return IsElementFound(@override, name)
+               && IsElementFound(target, name);
     }
 
     private static bool IsElementFound(XmlNode element, string name)
-        => element.NodeType == XmlNodeType.Element && element.LocalName == name;
+        => element.NodeType == XmlNodeType.Element
+           && element.LocalName == name;
 
-    private static bool IsAttributeIdsEquals(XmlElement rules, XmlElement from, XmlElement target) {
-        if (!rules.HasAttributeIdName() || !from.HasAttributes) {
+    private static bool IsAttributeIdsEquals(
+        XmlElement rules,
+        XmlElement @override,
+        XmlElement target
+    ) {
+        if (!rules.HasAttributeIdName() || !@override.HasAttributes) {
             return false;
         }
 
         var key = rules.GetAttributeIdName();
-
-        if (!from.HasAttribute(key)) {
+        if (!@override.HasAttribute(key)) {
             return false;
         }
 
         var targetValue = target.GetAttribute(key);
-        var isValueEquals = from.GetAttribute(key) == targetValue;
+        var isValueEquals = @override.GetAttribute(key) == targetValue;
 
         if (rules.HasAttributeIdValue()) {
             return isValueEquals && targetValue == rules.GetAttributeIdValue();
