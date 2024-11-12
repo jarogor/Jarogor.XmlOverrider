@@ -14,60 +14,35 @@ public sealed class Rules {
     /// </summary>
     public readonly XmlDocument XmlDocument = new();
 
-    /// <summary>
-    ///     Constructor
-    /// </summary>
     /// <param name="rulesFilePath">Path to override rules file</param>
     /// <param name="xsdFilePath">Path to the override rules schema file</param>
     /// <exception cref="FileNotFoundException"></exception>
-    public Rules(string rulesFilePath, string? xsdFilePath = null) {
-        if (!File.Exists(rulesFilePath)) {
-            throw new FileNotFoundException($"Rules xml file does not exist: [{rulesFilePath}]");
-        }
-
+    public static Rules Create(string rulesFilePath, string? xsdFilePath = null) {
         xsdFilePath ??= XsdFilePath();
-        var rulesStream = new StreamReader(File.OpenRead(rulesFilePath));
+        var rulesStream = new StreamReader(File.OpenRead(FilePathValidate(rulesFilePath)));
         var xsdStream = new StreamReader(File.OpenRead(xsdFilePath));
-        LoadAndValidate(rulesStream, xsdStream);
+        return new Rules(rulesStream, xsdStream);
     }
 
-    /// <summary>
-    ///     Constructor
-    /// </summary>
     /// <param name="rulesStream">Override rules stream</param>
     /// <param name="xsdStream">Override rules schema stream</param>
-    public Rules(TextReader rulesStream, TextReader? xsdStream = null) {
-        xsdStream ??= new StreamReader(File.OpenRead(XsdFilePath()));
-        LoadAndValidate(rulesStream, xsdStream);
-    }
+    public static Rules Create(TextReader rulesStream, TextReader? xsdStream = null)
+        => new(rulesStream, xsdStream ?? new StreamReader(File.OpenRead(XsdFilePath())));
 
-    /// <summary>
-    ///     Constructor
-    /// </summary>
     /// <param name="rulesFilePath">Path to override rules file</param>
     /// <param name="xsdStream">Override rules schema stream</param>
-    public Rules(string rulesFilePath, TextReader? xsdStream = null) {
-        if (!File.Exists(rulesFilePath)) {
-            throw new FileNotFoundException($"Rules xml file does not exist: [{rulesFilePath}]");
-        }
-
-        var rulesStream = new StreamReader(File.OpenRead(rulesFilePath));
+    public static Rules Create(string rulesFilePath, TextReader? xsdStream = null) {
+        var rulesStream = new StreamReader(File.OpenRead(FilePathValidate(rulesFilePath)));
         xsdStream ??= new StreamReader(File.OpenRead(XsdFilePath()));
-        LoadAndValidate(rulesStream, xsdStream);
+        return new Rules(rulesStream, xsdStream);
     }
 
-    /// <summary>
-    ///     Constructor
-    /// </summary>
     /// <param name="rulesStream">Override rules stream</param>
     /// <param name="xsdFilePath">Path to the override rules schema file</param>
-    public Rules(TextReader rulesStream, string? xsdFilePath = null) {
-        xsdFilePath ??= XsdFilePath();
-        var xsdStream = new StreamReader(File.OpenRead(xsdFilePath));
-        LoadAndValidate(rulesStream, xsdStream);
-    }
+    public static Rules Create(TextReader rulesStream, string? xsdFilePath = null)
+        => new(rulesStream, new StreamReader(File.OpenRead(xsdFilePath ?? XsdFilePath())));
 
-    private void LoadAndValidate(TextReader rulesStream, TextReader xsdStream) {
+    private Rules(TextReader rulesStream, TextReader xsdStream) {
         using var schemaDocument = XmlReader.Create(xsdStream);
         var schemas = new XmlSchemaSet();
         schemas.Add(string.Empty, schemaDocument);
@@ -79,6 +54,14 @@ public sealed class Rules {
         using var reader = XmlReader.Create(rulesStream, settings);
         XmlDocument.Load(reader);
         XmlDocument.Validate((_, e) => throw e.Exception);
+    }
+
+    private static string FilePathValidate(string rulesFilePath) {
+        if (!File.Exists(rulesFilePath)) {
+            throw new FileNotFoundException($"Rules xml file does not exist: [{rulesFilePath}]");
+        }
+
+        return rulesFilePath;
     }
 
     private static string XsdFilePath() {

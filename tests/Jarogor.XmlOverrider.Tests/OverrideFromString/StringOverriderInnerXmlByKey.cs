@@ -56,7 +56,7 @@ public class StringOverriderInnerXmlByKey {
         var target = new XmlDocument();
         target.LoadXml(SourceXml);
 
-        var rules = new Rules(new StringReader(RulesXml), SchemeFilePath);
+        var rules = Rules.Create(new StringReader(RulesXml), SchemeFilePath);
         var overrider = new StringOverrider(rules, target.OuterXml);
 
         var overridingXmlDocument = new XmlDocument();
