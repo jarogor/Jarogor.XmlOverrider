@@ -58,16 +58,16 @@ internal sealed class Overriding<T> {
 
         foreach (var rulesChildNode in rulesChildNodes) {
             foreach (var overrideChild in overrideChildren) {
-                ProcessingChild(target, targetChildren, rulesChildNode, overrideChild);
+                ProcessingChild(rulesChildNode, overrideChild, target, targetChildren);
             }
         }
     }
 
     private void ProcessingChild(
-        XmlNode target,
-        IEnumerable<XmlElement> targetChildren,
         XmlElement rulesChildNode,
-        XmlElement overrideChild
+        XmlElement overrideChild,
+        XmlNode target,
+        IEnumerable<XmlElement> targetChildren
     ) {
         var targets = targetChildren
             .Where(it => IsElementNamesEquals(rulesChildNode, overrideChild, it))
@@ -76,7 +76,7 @@ internal sealed class Overriding<T> {
         foreach (var targetChild in targets) {
             if (rulesChildNode.IsOverridable() && IsAttributeIdsEquals(rulesChildNode, overrideChild, targetChild)) {
                 if (rulesChildNode.IsOverrideInnerXml()) {
-                    ReplaceChildren(target, overrideChild, targetChild);
+                    ReplaceChildren(overrideChild, target, targetChild);
                     _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(overrideChild, rulesChildNode));
                 } else {
                     OverrideAttributes(rulesChildNode, overrideChild, targetChild);
@@ -88,8 +88,8 @@ internal sealed class Overriding<T> {
     }
 
     private static void ReplaceChildren(
-        XmlNode target,
         XmlElement overrideChild,
+        XmlNode target,
         XmlElement targetChild
     ) {
         if (target.OwnerDocument is null) {
@@ -111,16 +111,16 @@ internal sealed class Overriding<T> {
                     continue;
                 }
 
-                OverrideAttribute(targetChild, overrideAttribute, overrideChild, rulesChildNode);
+                OverrideAttribute(rulesChildNode, overrideChild, overrideAttribute, targetChild);
             }
         }
     }
 
     private void OverrideAttribute(
-        XmlElement targetChild,
-        XmlAttribute overrideAttribute,
+        XmlElement rulesChildNode,
         XmlElement overrideChild,
-        XmlElement rulesChildNode
+        XmlAttribute overrideAttribute,
+        XmlElement targetChild
     ) {
         foreach (XmlAttribute targetAttribute in targetChild.Attributes) {
             if (targetAttribute.LocalName != overrideAttribute.LocalName) {
@@ -137,7 +137,8 @@ internal sealed class Overriding<T> {
     }
 
     private static IEnumerable<string> RulesAttributeNames(XmlNode rules)
-        => rules.ChildNodes
+        => rules
+            .ChildNodes
             .OfType<XmlElement>()
             .Where(it => it.IsAttributeElement())
             .Select(it => it.GetElementName());
