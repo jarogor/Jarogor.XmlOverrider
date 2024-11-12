@@ -9,11 +9,10 @@ using Microsoft.Extensions.Logging;
 namespace Jarogor.XmlOverrider;
 
 internal sealed class Overriding<T> {
-    private readonly ILogger<T> _logger;
-
     private readonly XmlElement _override;
     private readonly XmlElement _rules;
     private readonly XmlElement _target;
+    private readonly ILogger<T> _logger;
 
     public Overriding(
         Rules rules,
@@ -21,10 +20,10 @@ internal sealed class Overriding<T> {
         XmlDocument target,
         ILogger<T> logger
     ) {
-        _logger = logger;
         _rules = rules.XmlDocument.DocumentElement ?? throw new InvalidOperationException("rules xml");
         _override = @override.DocumentElement ?? throw new InvalidOperationException("override xml");
         _target = target.DocumentElement ?? throw new InvalidOperationException("target xml");
+        _logger = logger;
     }
 
     public void Processing()
@@ -69,8 +68,10 @@ internal sealed class Overriding<T> {
         XmlNode target,
         IEnumerable<XmlElement> targetChildren
     ) {
+        var isElementType = rulesChildNode.IsElementType();
+        var name = rulesChildNode.GetElementName();
         var targets = targetChildren
-            .Where(it => IsElementNamesEquals(rulesChildNode, overrideChild, it))
+            .Where(it => isElementType && IsElementNamesEquals(name, overrideChild, it))
             .ToList();
 
         foreach (var targetChild in targets) {
@@ -107,11 +108,9 @@ internal sealed class Overriding<T> {
     ) {
         foreach (var rulesAttrName in RulesAttributeNames(rulesChildNode)) {
             foreach (XmlAttribute overrideAttribute in overrideChild.Attributes) {
-                if (rulesAttrName != overrideAttribute.LocalName) {
-                    continue;
+                if (rulesAttrName == overrideAttribute.LocalName) {
+                    OverrideAttribute(rulesChildNode, overrideChild, overrideAttribute, targetChild);
                 }
-
-                OverrideAttribute(rulesChildNode, overrideChild, overrideAttribute, targetChild);
             }
         }
     }
@@ -143,24 +142,11 @@ internal sealed class Overriding<T> {
             .Where(it => it.IsAttributeElement())
             .Select(it => it.GetElementName());
 
-    private static bool IsElementNamesEquals(
-        XmlElement rules,
-        XmlNode @override,
-        XmlNode target
-    ) {
-        if (!rules.IsElementType()) {
-            return false;
-        }
-
-        var name = rules.GetElementName();
-
-        return IsElementFound(@override, name)
-               && IsElementFound(target, name);
-    }
+    private static bool IsElementNamesEquals(string name, XmlNode @override, XmlNode target)
+        => IsElementFound(@override, name) && IsElementFound(target, name);
 
     private static bool IsElementFound(XmlNode element, string name)
-        => element.NodeType == XmlNodeType.Element
-           && element.LocalName == name;
+        => element.NodeType == XmlNodeType.Element && element.LocalName == name;
 
     private static bool IsAttributeIdsEquals(
         XmlElement rules,
