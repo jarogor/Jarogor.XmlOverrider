@@ -1,13 +1,12 @@
 ﻿using System.Xml;
 using Jarogor.XmlOverrider.Overrider;
-using Jarogor.XmlOverrider.Scheme;
 using NUnit.Framework;
 
 namespace Jarogor.XmlOverrider.Tests.OverrideFromString;
 
 [TestFixture]
-public class StringOverriderInnerXmlByKey {
-    private const string RulesXml =
+public class StringOverriderInnerXmlByKey : TestBase {
+    protected override string RulesXml =>
         """
         <?xml version="1.0" encoding="utf-8"?>
         <overrideRules>
@@ -48,16 +47,11 @@ public class StringOverriderInnerXmlByKey {
         """;
 
     private const string ExpectedXml = OverridingXml;
-    private static readonly string BasePath = Path.Combine(Environment.CurrentDirectory, "data");
-    private static readonly string SchemeFilePath = Path.Combine(BasePath, "Rules.xsd");
 
     [Test]
     public void Success() {
         var target = new XmlDocument();
         target.LoadXml(SourceXml);
-
-        var rules = Rules.Create(new StringReader(RulesXml), SchemeFilePath);
-        var overrider = new StringOverrider(rules, target.OuterXml);
 
         var overridingXmlDocument = new XmlDocument();
         overridingXmlDocument.LoadXml(OverridingXml);
@@ -65,9 +59,10 @@ public class StringOverriderInnerXmlByKey {
         var expected = new XmlDocument();
         expected.LoadXml(ExpectedXml);
 
+        var overrider = new StringOverrider(Rules(), target.OuterXml);
         overrider.AddOverride(overridingXmlDocument);
-        var actual = overrider.Processing().Get();
 
+        var actual = overrider.Processing().Get();
         Assert.That(actual.OuterXml, Is.EqualTo(expected.OuterXml));
     }
 }

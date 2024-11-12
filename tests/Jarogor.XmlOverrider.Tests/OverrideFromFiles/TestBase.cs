@@ -10,7 +10,10 @@ public abstract class TestBase {
     protected static readonly string TargetXmlFilePath = Path.Combine(BasePath, "test.xml");
     private static readonly string ExpectedFilePath = Path.Combine(BasePath, "expected.xml");
 
-    protected static readonly Rules Rules = Rules.Create(RulesFilePath, SchemeFilePath);
+    protected static readonly Rules Rules = Rules.Create(
+        new StreamReader(File.OpenRead(RulesFilePath)),
+        new StreamReader(File.OpenRead(SchemeFilePath))
+    );
 
     protected static readonly List<string> FromXmlFiles = new() {
         Path.Combine(BasePath, "override-a.xml"),
