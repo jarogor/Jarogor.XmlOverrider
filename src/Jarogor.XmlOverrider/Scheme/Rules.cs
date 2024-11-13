@@ -14,7 +14,10 @@ public sealed class Rules {
     /// </summary>
     public readonly XmlDocument XmlDocument = new();
 
-    private Rules(TextReader rulesStream, TextReader xsdStream) {
+    /// <param name="rulesStream">Override rules stream</param>
+    /// <param name="xsdStream">Override rules schema stream</param>
+    public Rules(TextReader rulesStream, TextReader? xsdStream = null) {
+        xsdStream ??= new StreamReader(File.OpenRead(XsdFilePath()));
         using var schemaDocument = XmlReader.Create(xsdStream);
         var schemas = new XmlSchemaSet();
         schemas.Add(string.Empty, schemaDocument);
@@ -27,11 +30,6 @@ public sealed class Rules {
         XmlDocument.Load(reader);
         XmlDocument.Validate((_, e) => throw e.Exception);
     }
-
-    /// <param name="rulesStream">Override rules stream</param>
-    /// <param name="xsdStream">Override rules schema stream</param>
-    public static Rules Create(TextReader rulesStream, TextReader? xsdStream = null)
-        => new(rulesStream, xsdStream ?? new StreamReader(File.OpenRead(XsdFilePath())));
 
     private static string XsdFilePath() {
         var xsdFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Rules.xsd");

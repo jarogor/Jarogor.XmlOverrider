@@ -11,7 +11,7 @@ public abstract class TestBase {
     protected abstract string RulesXml { get; }
 
     protected Rules Rules()
-        => Scheme.Rules.Create(
+        => new(
             new StringReader(RulesXml),
             new StreamReader(File.OpenRead(SchemeFilePath))
         );

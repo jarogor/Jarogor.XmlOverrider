@@ -10,7 +10,7 @@ public abstract class TestBase {
     protected static readonly string TargetXmlFilePath = Path.Combine(BasePath, "test.xml");
     private static readonly string ExpectedFilePath = Path.Combine(BasePath, "expected.xml");
 
-    protected static readonly Rules Rules = Rules.Create(
+    protected static readonly Rules Rules = new(
         new StreamReader(File.OpenRead(RulesFilePath)),
         new StreamReader(File.OpenRead(SchemeFilePath))
     );
