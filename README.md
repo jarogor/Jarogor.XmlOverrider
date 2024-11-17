@@ -11,33 +11,40 @@
 ### Поиск
 
 #### По имени атрибута и его значению
-- _Пример:_ Найти все элементы `qwerty` с атрибутом `foo` и значением `bar`:
-  ```xml
-  <node name="qwerty" attributeIdName="foo" attributeIdValue="bar" />
-  ```
+
+__Пример:__ Найти все элементы `qwerty` с атрибутом `foo` и значением `bar`:
+
+```xml
+<node name="qwerty" attributeIdName="foo" attributeIdValue="bar"/>
+```
+
 #### По имени атрибута
-- _Пример:_ Найти все элементы `qwerty` с совпадающим значением атрибута `foo`:
-  ```xml
-  <node name="qwerty" attributeIdName="foo" />
-  ```
+
+__Пример:__ Найти все элементы `qwerty` с совпадающим значением атрибута `foo`:
+
+```xml
+<node name="qwerty" attributeIdName="foo"/>
+```
 
 ### Замена
 
 #### Только значения атрибута
 
-- _Пример:_ Найти и заменить все значения у атрибута `bar`:
-  ```xml
-  <node name="qwerty" attributeIdName="foo" override="attributes">
+__Пример:__ Найти и заменить все значения у атрибута `bar`:
+
+```xml
+<node name="qwerty" attributeIdName="foo" override="attributes">
     <attribute name="bar"/>
-  </node>
-  ```
+</node>
+```
 
 #### Всего содержимого элемента
 
-- _Пример:_ Найти и заменить всё содержимое элемента:
-  ```xml
-  <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
-  ```
+__Пример:__ Найти и заменить всё содержимое элемента:
+
+```xml
+<node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
+```
 
 ## Пример использования
 
