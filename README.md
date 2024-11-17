@@ -8,7 +8,7 @@
 
 Правила перекрытия создаются по [xsd-схеме](./src/Jarogor.XmlOverrider/Scheme/Rules.xsd).
 
-Поиск
+### Поиск
 - __[более точный]__ По имени атрибута и его значению. Искать все элементы `qwerty` с атрибутом `foo` и значением `bar`:
 ```xml
 <node name="qwerty" attributeIdName="foo" attributeIdValue="bar" />
@@ -18,7 +18,7 @@
 <node name="qwerty" attributeIdName="foo" />
 ```
 
-Замена:
+### Замена
 - Только значения атрибута. Искать все элементы `qwerty` с совпадающим значением атрибута `foo` и заменить все значения у атрибута `bar`:
 ```xml
 <node name="qwerty" attributeIdName="foo" override="attributes">
