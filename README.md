@@ -9,26 +9,30 @@
 Правила перекрытия создаются по [xsd-схеме](./src/Jarogor.XmlOverrider/Scheme/Rules.xsd).
 
 ### Поиск
-- По имени атрибута и его значению. Искать все элементы `qwerty` с атрибутом `foo` и значением `bar`:
-```xml
-<node name="qwerty" attributeIdName="foo" attributeIdValue="bar" />
-```
-- По имени атрибута. Искать все элементы `qwerty` с совпадающим значением атрибута `foo`:
-```xml
-<node name="qwerty" attributeIdName="foo" />
-```
+- По имени атрибута и его значению:
+  - _Искать все элементы `qwerty` с атрибутом `foo` и значением `bar`_:
+    ```xml
+    <node name="qwerty" attributeIdName="foo" attributeIdValue="bar" />
+    ```
+- По имени атрибута.
+  - _Искать все элементы `qwerty` с совпадающим значением атрибута `foo`_:
+    ```xml
+    <node name="qwerty" attributeIdName="foo" />
+    ```
 
 ### Замена
-- Только значения атрибута. Искать все элементы `qwerty` с совпадающим значением атрибута `foo` и заменить все значения у атрибута `bar`:
-```xml
-<node name="qwerty" attributeIdName="foo" override="attributes">
-    <attribute name="bar"/>
-</node>
-```
-- Всего содержимого элемента. Искать все элементы `qwerty` с совпадающим значением атрибута `foo` и заменить всё содержимое элемента:
-```xml
-<node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
-```
+- Только значения атрибута.
+  - _Искать все элементы `qwerty` с совпадающим значением атрибута `foo` и заменить все значения у атрибута `bar`_:
+    ```xml
+    <node name="qwerty" attributeIdName="foo" override="attributes">
+        <attribute name="bar"/>
+    </node>
+    ```
+- Всего содержимого элемента.
+  - _Искать все элементы `qwerty` с совпадающим значением атрибута `foo` и заменить всё содержимое элемента_:
+    ```xml
+    <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
+    ```
 
 ## Пример использования
 
