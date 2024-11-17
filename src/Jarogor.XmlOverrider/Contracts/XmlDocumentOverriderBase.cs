@@ -14,4 +14,7 @@ public abstract class XmlDocumentOverriderBase<T> : OverriderBase<T>, IXmlDocume
 
     /// <inheritdoc />
     public abstract T AddOverride(XmlDocument overridingXmlDocument);
+
+    /// <inheritdoc />
+    public abstract T AddOverride(string overridingXml);
 }

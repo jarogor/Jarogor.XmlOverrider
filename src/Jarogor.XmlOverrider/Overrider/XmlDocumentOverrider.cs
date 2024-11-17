@@ -29,6 +29,14 @@ public class XmlDocumentOverrider : XmlDocumentOverriderBase<XmlDocumentOverride
     }
 
     /// <inheritdoc />
+    public override XmlDocumentOverrider AddOverride(string overridingXml) {
+        var xmlDocument = new XmlDocument();
+        xmlDocument.LoadXml(overridingXml);
+        _overridingXmlDocuments.Add(xmlDocument);
+        return this;
+    }
+
+    /// <inheritdoc />
     public override XmlDocumentOverrider Processing() {
         for (var index = 0; index < _overridingXmlDocuments.Count; index++) {
             Logger.LogDebug("Processing {0}", index);

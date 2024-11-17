@@ -13,4 +13,11 @@ public interface IXmlDocumentOverrider<out T> {
     /// <param name="overridingXmlDocument"></param>
     /// <returns></returns>
     public T AddOverride(XmlDocument overridingXmlDocument);
+
+    /// <summary>
+    ///     Adding an override xml string
+    /// </summary>
+    /// <param name="overridingXml"></param>
+    /// <returns></returns>
+    public T AddOverride(string overridingXml);
 }
