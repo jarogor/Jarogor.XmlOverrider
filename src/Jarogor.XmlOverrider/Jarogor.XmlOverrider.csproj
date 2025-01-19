@@ -12,7 +12,15 @@
             [EN] Jarogor.XmlOverrider can help you override an XML document with other documents using simple rules.
         </PackageDescription>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <RepositoryUrl>https://gitverse.ru/jarogor/Jarogor.XmlOverrider</RepositoryUrl>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(SolutionDir)\nuget\README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
