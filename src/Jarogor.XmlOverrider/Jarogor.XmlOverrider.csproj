@@ -1,21 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Authors>Jarogor</Authors>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>11</LangVersion>
         <Nullable>enable</Nullable>
 
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+        <Version>1.0.1</Version>
+        <Authors>Jarogor</Authors>
+        <RepositoryUrl>https://gitverse.ru/jarogor/Jarogor.XmlOverrider</RepositoryUrl>
         <PackageId>Jarogor.XmlOverrider</PackageId>
         <PackageDescription>
             [RU] Jarogor.XmlOverrider может помочь переопределить XML-документ другими документами с помощью простых правил.
             [EN] Jarogor.XmlOverrider can help you override an XML document with other documents using simple rules.
         </PackageDescription>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://gitverse.ru/jarogor/Jarogor.XmlOverrider</RepositoryUrl>
+        <PackageProjectUrl>https://jarogor.ru</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReleaseNotes>Minor fixes, refactoring and README</PackageReleaseNotes>
+        <PackageTags>xml;merge;override;overwrite</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
