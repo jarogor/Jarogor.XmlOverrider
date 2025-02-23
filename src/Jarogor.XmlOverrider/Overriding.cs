@@ -56,36 +56,37 @@ internal sealed class Overriding<T> {
             .ToList();
 
         foreach (var rulesChildNode in rulesChildNodes) {
+            var isElementType = rulesChildNode.IsElementType();
+            var name = rulesChildNode.GetElementName();
+
             foreach (var overrideChild in overrideChildren) {
-                ProcessingChild(rulesChildNode, overrideChild, target, targetChildren);
+                var targets = targetChildren.Where(it => isElementType && IsElementNamesEquals(name, overrideChild, it));
+
+                foreach (var targetChild in targets) {
+                    if (rulesChildNode.IsOverridable() && IsAttributeIdsEquals(rulesChildNode, overrideChild, targetChild)) {
+                        Override(target, rulesChildNode, overrideChild, targetChild);
+                        continue;
+                    }
+
+                    ProcessingRecursive(rulesChildNode, overrideChild, targetChild);
+                }
             }
         }
     }
 
-    private void ProcessingChild(
+    private void Override(
+        XmlNode target,
         XmlElement rulesChildNode,
         XmlElement overrideChild,
-        XmlNode target,
-        IEnumerable<XmlElement> targetChildren
+        XmlElement targetChild
     ) {
-        var isElementType = rulesChildNode.IsElementType();
-        var name = rulesChildNode.GetElementName();
-        var targets = targetChildren
-            .Where(it => isElementType && IsElementNamesEquals(name, overrideChild, it))
-            .ToList();
-
-        foreach (var targetChild in targets) {
-            if (rulesChildNode.IsOverridable() && IsAttributeIdsEquals(rulesChildNode, overrideChild, targetChild)) {
-                if (rulesChildNode.IsOverrideInnerXml()) {
-                    ReplaceChildren(overrideChild, target, targetChild);
-                    _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(overrideChild, rulesChildNode));
-                } else {
-                    OverrideAttributes(rulesChildNode, overrideChild, targetChild);
-                }
-            } else {
-                ProcessingRecursive(rulesChildNode, overrideChild, targetChild);
-            }
+        if (rulesChildNode.IsOverrideInnerXml()) {
+            ReplaceChildren(overrideChild, target, targetChild);
+            _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(overrideChild, rulesChildNode));
+            return;
         }
+
+        OverrideAttributes(rulesChildNode, overrideChild, targetChild);
     }
 
     private static void ReplaceChildren(
