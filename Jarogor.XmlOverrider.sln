@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarogor.XmlOverrider", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarogor.XmlOverrider.Tests", "tests\Jarogor.XmlOverrider.Tests\Jarogor.XmlOverrider.Tests.csproj", "{FE1A20E3-2677-47E9-980C-5B0CB049BA51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarogor.XmlOverrider.Benchmarks", "tests\Jarogor.XmlOverrider.Benchmarks\Jarogor.XmlOverrider.Benchmarks.csproj", "{6C11C294-E473-41C8-BADE-7BE9C026B05F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{FE1A20E3-2677-47E9-980C-5B0CB049BA51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE1A20E3-2677-47E9-980C-5B0CB049BA51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE1A20E3-2677-47E9-980C-5B0CB049BA51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C11C294-E473-41C8-BADE-7BE9C026B05F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C11C294-E473-41C8-BADE-7BE9C026B05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C11C294-E473-41C8-BADE-7BE9C026B05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C11C294-E473-41C8-BADE-7BE9C026B05F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
