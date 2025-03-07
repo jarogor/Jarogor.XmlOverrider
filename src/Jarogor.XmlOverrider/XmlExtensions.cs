@@ -15,31 +15,44 @@ internal static class XmlExtensions
         XmlElement targetChild
     )
     {
-        HashSet<string> hashSet = new(rulesChildNode.RulesAttributeNames());
-
-        foreach (XmlAttribute overrideAttribute in overrideChild.Attributes)
+        foreach (var rulesAttributeName in rulesChildNode.RulesAttributeNames())
         {
-            if (!hashSet.Contains(overrideAttribute.LocalName))
+            foreach (XmlAttribute overrideAttribute in overrideChild.Attributes)
+            {
+                if (rulesAttributeName != overrideAttribute.LocalName)
+                {
+                    continue;
+                }
+
+                if (targetChild.TryOverrideAttribute(overrideAttribute))
+                {
+                    Logger.XmlInformation("Attributes on the element", overrideChild, rulesChildNode);
+                }
+            }
+        }
+    }
+
+    private static bool TryOverrideAttribute(this XmlElement targetChild, XmlAttribute overrideAttribute)
+    {
+        bool result = false;
+
+        foreach (XmlAttribute targetAttribute in targetChild.Attributes)
+        {
+            if (targetAttribute.LocalName != overrideAttribute.LocalName)
             {
                 continue;
             }
 
-            foreach (XmlAttribute targetAttribute in targetChild.Attributes)
+            if (targetAttribute.Value == overrideAttribute.Value)
             {
-                if (targetAttribute.LocalName != overrideAttribute.LocalName)
-                {
-                    continue;
-                }
-
-                if (targetAttribute.Value == overrideAttribute.Value)
-                {
-                    continue;
-                }
-
-                Logger.XmlInformation("Attributes on the element", overrideChild, rulesChildNode);
-                targetAttribute.Value = overrideAttribute.Value;
+                continue;
             }
+
+            targetAttribute.Value = overrideAttribute.Value;
+            result = true;
         }
+
+        return result;
     }
 
     private static IEnumerable<string> RulesAttributeNames(this XmlNode rules)

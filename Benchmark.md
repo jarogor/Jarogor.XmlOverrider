@@ -1,7 +1,7 @@
 # Jarogor.XmlOverrider
 
 ```
-BenchmarkDotNet v0.14.0, Windows 11 (10.0.26100.3194)
+BenchmarkDotNet v0.14.0, Windows 11 (10.0.26100.3323)
 AMD Ryzen 5 3600, 1 CPU, 12 logical and 6 physical cores
 .NET SDK 9.0.103
   [Host]     : .NET 8.0.13 (8.0.1325.6609), X64 RyuJIT AVX2
@@ -10,5 +10,5 @@ AMD Ryzen 5 3600, 1 CPU, 12 logical and 6 physical cores
 
 | Method    | Mean     | Error   | StdDev  | Gen0    | Completed Work Items | Lock Contentions | Exceptions | Gen1   | Allocated |
 |---------- |---------:|--------:|--------:|--------:|---------------------:|-----------------:|-----------:|-------:|----------:|
-| Benchmark | 212.1 us | 3.96 us | 3.70 us | 23.4375 |                    - |                - |          - | 1.9531 | 197.36 KB |
+| Benchmark | 226.8 us | 4.38 us | 6.69 us | 24.4141 |                    - |                - |          - | 1.9531 | 200.39 KB |
 ```
