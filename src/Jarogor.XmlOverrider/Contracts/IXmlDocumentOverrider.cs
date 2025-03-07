@@ -6,7 +6,8 @@ namespace Jarogor.XmlOverrider.Contracts;
 ///     Overrides for xml string
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IXmlDocumentOverrider<out T> {
+public interface IXmlDocumentOverrider<out T>
+{
     /// <summary>
     ///     Adding an override xml
     /// </summary>

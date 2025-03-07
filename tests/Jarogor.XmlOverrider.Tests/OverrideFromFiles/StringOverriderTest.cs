@@ -1,19 +1,25 @@
-﻿using Jarogor.XmlOverrider.Overrider;
+﻿using System.Xml;
+
+using Jarogor.XmlOverrider.Overrider;
+
 using NUnit.Framework;
 
 namespace Jarogor.XmlOverrider.Tests.OverrideFromFiles;
 
 [TestFixture]
-public class StringOverriderTest : TestBase {
+public class StringOverriderTest : TestBase
+{
     [Test]
-    public void OverridingFromStringSuccess() {
-        var overrider = new StringOverrider(Rules, LoadXml(TargetXmlFilePath).OuterXml);
+    public void OverridingFromStringSuccess()
+    {
+        StringOverrider? overrider = new(Rules, LoadXml(TargetXmlFilePath).OuterXml);
 
-        foreach (var file in FromXmlFiles) {
+        foreach (string? file in FromXmlFiles)
+        {
             overrider.AddOverride(LoadXml(file));
         }
 
-        var actual = overrider.Processing().Get();
+        XmlDocument? actual = overrider.Processing().Get();
         Assert.That(actual.OuterXml, Is.EqualTo(ExpectedXml));
     }
 }

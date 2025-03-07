@@ -1,5 +1,7 @@
 using System.Xml;
+
 using Jarogor.XmlOverrider.Scheme;
+
 using Microsoft.Extensions.Logging;
 
 namespace Jarogor.XmlOverrider.Contracts;
@@ -8,7 +10,8 @@ namespace Jarogor.XmlOverrider.Contracts;
 ///     Base overriding logic
 /// </summary>
 /// <typeparam name="T">Type of overrider</typeparam>
-public abstract class OverriderBase<T> {
+public abstract class OverriderBase<T>
+{
     private readonly Rules _rules;
 
     /// <summary>
@@ -16,7 +19,8 @@ public abstract class OverriderBase<T> {
     /// </summary>
     /// <param name="rules">Overriding rules</param>
     /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    protected OverriderBase(Rules rules, ILogger<T> logger) {
+    protected OverriderBase(Rules rules, ILogger<T> logger)
+    {
         _rules = rules;
         Logger = logger;
     }
@@ -42,12 +46,16 @@ public abstract class OverriderBase<T> {
     /// </summary>
     /// <param name="overridingXmlDocument">overriding xml</param>
     protected void Processing(XmlDocument overridingXmlDocument)
-        => new Overriding<T>(_rules, overridingXmlDocument, TargetXml, Logger).Processing();
+    {
+        new Overriding<T>(_rules, overridingXmlDocument, TargetXml, Logger).Processing();
+    }
 
     /// <summary>
     ///     Getting the result
     /// </summary>
     /// <returns>Result xml document</returns>
     public XmlDocument Get()
-        => TargetXml;
+    {
+        return TargetXml;
+    }
 }

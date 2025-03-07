@@ -1,11 +1,14 @@
 using System.Xml;
+
 using Jarogor.XmlOverrider.Extensions;
+
 using NUnit.Framework;
 
 namespace Jarogor.XmlOverrider.Tests;
 
 [TestFixture]
-public class RulesExtensionsTest {
+public class RulesExtensionsTest
+{
     private const string Xml
         = """
           <node name="foo"
@@ -16,13 +19,15 @@ public class RulesExtensionsTest {
           """;
 
     [Test]
-    public void OverridingRulesExtensionsTest() {
-        var xml = new XmlDocument();
+    public void OverridingRulesExtensionsTest()
+    {
+        XmlDocument? xml = new();
         xml.LoadXml(Xml);
 
-        var element = xml.DocumentElement;
+        XmlElement? element = xml.DocumentElement;
 
-        Assert.Multiple(() => {
+        Assert.Multiple(() =>
+        {
             Assert.That(element!.IsAttributeElement(), Is.False);
             Assert.That(element!.IsElementType(), Is.True);
             Assert.That(element!.GetAttributeIdName(), Is.EqualTo("bar"));

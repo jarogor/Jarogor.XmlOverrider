@@ -1,6 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Xml;
+
 using BenchmarkDotNet.Attributes;
+
 using Jarogor.XmlOverrider.Overrider;
 using Jarogor.XmlOverrider.Scheme;
 
@@ -9,27 +11,9 @@ namespace Jarogor.XmlOverrider.Benchmarks;
 [MemoryDiagnoser]
 [ThreadingDiagnoser]
 [ExceptionDiagnoser]
-public class StringOverriderInnerXmlByKeyAndValue {
-    private static string BasePath([CallerFilePath] string path = "") => path;
+public class StringOverriderInnerXmlByKeyAndValue
+{
     private const string RulesXsd = @"..\..\src\Jarogor.XmlOverrider\Scheme\Rules.xsd";
-
-    [Benchmark]
-    public void Benchmark() {
-        var basePath = Path.GetDirectoryName(BasePath());
-        var fileStream = File.OpenRead(Path.Combine(basePath ?? ".", RulesXsd));
-        var rules = new Rules(new StringReader(RulesXml), new StreamReader(fileStream));
-
-        var target = new XmlDocument();
-        target.LoadXml(SourceXml);
-
-        var overridingXmlDocument = new XmlDocument();
-        overridingXmlDocument.LoadXml(OverridingXml);
-
-        var overrider = new StringOverrider(rules, target.OuterXml);
-        overrider.AddOverride(overridingXmlDocument);
-
-        overrider.Processing().Get();
-    }
 
     private const string RulesXml =
         """
@@ -103,4 +87,28 @@ public class StringOverriderInnerXmlByKeyAndValue {
             </section-c>
         </root>
         """;
+
+    private static string BasePath([CallerFilePath] string path = "")
+    {
+        return path;
+    }
+
+    [Benchmark]
+    public void Benchmark()
+    {
+        string? basePath = Path.GetDirectoryName(BasePath());
+        FileStream? fileStream = File.OpenRead(Path.Combine(basePath ?? ".", RulesXsd));
+        Rules? rules = new(new StringReader(RulesXml), new StreamReader(fileStream));
+
+        XmlDocument? target = new();
+        target.LoadXml(SourceXml);
+
+        XmlDocument? overridingXmlDocument = new();
+        overridingXmlDocument.LoadXml(OverridingXml);
+
+        StringOverrider? overrider = new(rules, target.OuterXml);
+        overrider.AddOverride(overridingXmlDocument);
+
+        overrider.Processing().Get();
+    }
 }

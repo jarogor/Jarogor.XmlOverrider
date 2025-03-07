@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <section-a>
-        <item key="a">
-            <a a="a"/>
-        </item>
-        <item key="b">
-            <a a="a"/>
-        </item>
-    </section-a>
+  <section-a>
+    <item key="a">
+      <a a="a"/>
+    </item>
+    <item key="b">
+      <a a="a"/>
+    </item>
+  </section-a>
 
-    <section-b>
-        <item key="a">
-            <a a="a"/>
-        </item>
-        <item key="b">
-            <a a="a"/>
-        </item>
-    </section-b>
+  <section-b>
+    <item key="a">
+      <a a="a"/>
+    </item>
+    <item key="b">
+      <a a="a"/>
+    </item>
+  </section-b>
 
-    <section-c>
-        <item key="a" value="1"/>
-    </section-c>
+  <section-c>
+    <item key="a" value="1"/>
+  </section-c>
 
-    <section-d>
-        <item key="a" value="1"/>
-    </section-d>
+  <section-d>
+    <item key="a" value="1"/>
+  </section-d>
 </root>

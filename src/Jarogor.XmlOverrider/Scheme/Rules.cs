@@ -8,7 +8,8 @@ namespace Jarogor.XmlOverrider.Scheme;
 /// <summary>
 ///     Override rules
 /// </summary>
-public sealed class Rules {
+public sealed class Rules
+{
     /// <summary>
     ///     Override rules
     /// </summary>
@@ -16,25 +17,28 @@ public sealed class Rules {
 
     /// <param name="rulesStream">Override rules stream</param>
     /// <param name="xsdStream">Override rules schema stream</param>
-    public Rules(TextReader rulesStream, TextReader? xsdStream = null) {
+    public Rules(TextReader rulesStream, TextReader? xsdStream = null)
+    {
         xsdStream ??= new StreamReader(File.OpenRead(XsdFilePath()));
-        using var schemaDocument = XmlReader.Create(xsdStream);
-        var schemas = new XmlSchemaSet();
+        using XmlReader? schemaDocument = XmlReader.Create(xsdStream);
+        XmlSchemaSet? schemas = new();
         schemas.Add(string.Empty, schemaDocument);
 
-        var settings = new XmlReaderSettings();
+        XmlReaderSettings? settings = new();
         settings.Schemas.Add(schemas);
         settings.ValidationType = ValidationType.Schema;
 
-        using var reader = XmlReader.Create(rulesStream, settings);
+        using XmlReader? reader = XmlReader.Create(rulesStream, settings);
         XmlDocument.Load(reader);
         XmlDocument.Validate((_, e) => throw e.Exception);
     }
 
-    private static string XsdFilePath() {
-        var xsdFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Rules.xsd");
+    private static string XsdFilePath()
+    {
+        string? xsdFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheme", "Rules.xsd");
 
-        if (!File.Exists(xsdFilePath)) {
+        if (!File.Exists(xsdFilePath))
+        {
             throw new FileNotFoundException($"XSD scheme file does not exist: [{xsdFilePath}]");
         }
 

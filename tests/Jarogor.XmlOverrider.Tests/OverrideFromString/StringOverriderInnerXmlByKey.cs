@@ -1,11 +1,14 @@
 ﻿using System.Xml;
+
 using Jarogor.XmlOverrider.Overrider;
+
 using NUnit.Framework;
 
 namespace Jarogor.XmlOverrider.Tests.OverrideFromString;
 
 [TestFixture]
-public class StringOverriderInnerXmlByKey : TestBase {
+public class StringOverriderInnerXmlByKey : TestBase
+{
     protected override string RulesXml =>
         """
         <?xml version="1.0" encoding="utf-8"?>
@@ -49,20 +52,21 @@ public class StringOverriderInnerXmlByKey : TestBase {
     private const string ExpectedXml = OverridingXml;
 
     [Test]
-    public void Success() {
-        var target = new XmlDocument();
+    public void Success()
+    {
+        XmlDocument? target = new();
         target.LoadXml(SourceXml);
 
-        var overridingXmlDocument = new XmlDocument();
+        XmlDocument? overridingXmlDocument = new();
         overridingXmlDocument.LoadXml(OverridingXml);
 
-        var expected = new XmlDocument();
+        XmlDocument? expected = new();
         expected.LoadXml(ExpectedXml);
 
-        var overrider = new StringOverrider(Rules(), target.OuterXml);
+        StringOverrider? overrider = new(Rules(), target.OuterXml);
         overrider.AddOverride(overridingXmlDocument);
 
-        var actual = overrider.Processing().Get();
+        XmlDocument? actual = overrider.Processing().Get();
         Assert.That(actual.OuterXml, Is.EqualTo(expected.OuterXml));
     }
 }

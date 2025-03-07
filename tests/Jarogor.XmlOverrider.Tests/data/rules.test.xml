@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overrideRules
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="file:///../../../src/Jarogor.XmlOverrider/Scheme/Rules.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="file:///../../../src/Jarogor.XmlOverrider/Scheme/Rules.xsd">
 
-    <node name="section-a">
-        <!--
-         Переопределяет содержимое элемента
-         сравнивая (идентифицируя) по содержимому атрибута "key"
-         и только для его значения "b".
+  <node name="section-a">
+    <!--
+     [RU] Переопределяет содержимое элемента
+     сравнивая (идентифицируя) по содержимому атрибута "key"
+     и только для его значения "b".
 
-         Overrides the contents of an element
-         comparing (identifying) by the contents of the "key" attribute
-         and only for its value "b".
-        -->
-        <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
+     [EN] Overrides the contents of an element
+     comparing (identifying) by the contents of the "key" attribute
+     and only for its value "b".
+    -->
+    <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
+  </node>
+
+  <node name="section-b">
+    <!--
+     [RU] Переопределяет содержимое элемента
+     сравнивая (идентифицируя) по содержимому атрибута "key".
+
+     [EN] Overrides the contents of an element
+     comparing (identifying) by the contents of the "key" attribute.
+    -->
+    <node name="item" attributeIdName="key" override="innerXml"/>
+  </node>
+
+  <node name="section-c">
+    <!--
+     [RU] Переопределяет у элмента "item" значение атрибута "value"
+     сравнивая (идентифицируя) по содержимому атрибута "key".
+
+     [EN] Overrides the "item" attribute value of the element "value"
+     comparing (identifying) by the contents of the "key" attribute.
+    -->
+    <node name="item" attributeIdName="key" override="attributes">
+      <attribute name="value"/>
     </node>
-
-    <node name="section-b">
-        <!--
-         Переопределяет содержимое элемента
-         сравнивая (идентифицируя) по содержимому атрибута "key".
-
-         Overrides the contents of an element
-         comparing (identifying) by the contents of the "key" attribute.
-        -->
-        <node name="item" attributeIdName="key" override="innerXml"/>
-    </node>
-
-    <node name="section-c">
-        <!--
-         Переопределяет у элмента "item" значение атрибута "value"
-         сравнивая (идентифицируя) по содержимому атрибута "key".
-
-         Overrides the "item" attribute value of the element "value"
-         comparing (identifying) by the contents of the "key" attribute.
-        -->
-        <node name="item" attributeIdName="key" override="attributes">
-            <attribute name="value"/>
-        </node>
-    </node>
+  </node>
 
 </overrideRules>
