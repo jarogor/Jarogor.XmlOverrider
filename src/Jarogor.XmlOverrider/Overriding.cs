@@ -47,36 +47,48 @@ internal sealed class Overriding<T>
         }
 
         List<XmlElement> rulesChildNodes = rules
-            .ChildNodes
-            .OfType<XmlElement>()
-            .Where(it => @override[it.GetElementName()] is not null)
+            .ChildXmlElement(it => @override[it.GetElementName()] is not null)
             .ToList();
 
         List<XmlElement> overrideChildren = @override
-            .ChildNodes
-            .OfType<XmlElement>()
-            .Where(it => it.NodeType == XmlNodeType.Element)
+            .ChildXmlElement(it => it.NodeType == XmlNodeType.Element)
             .ToList();
 
         List<XmlElement> targetChildren = target
-            .ChildNodes
-            .OfType<XmlElement>()
+            .ChildXmlElement()
             .ToList();
 
         foreach (XmlElement? rulesChildNode in rulesChildNodes)
         {
             bool isElementType = rulesChildNode.IsElementType();
             string name = rulesChildNode.GetElementName();
+            if (!isElementType)
+            {
+                continue;
+            }
 
             foreach (XmlElement? overrideChild in overrideChildren)
             {
-                IEnumerable<XmlElement> targets = targetChildren.Where(it => isElementType && IsElementNamesEquals(name, overrideChild, it));
+                IEnumerable<XmlElement> targets = targetChildren
+                    .Where(it => it.IsElementFound(name))
+                    .Where(_ => overrideChild.IsElementFound(name));
 
+                bool isOverridable = rulesChildNode.IsOverridable();
+                bool isOverrideInnerXml = rulesChildNode.IsOverrideInnerXml();
                 foreach (XmlElement? targetChild in targets)
                 {
-                    if (rulesChildNode.IsOverridable() && IsAttributeIdsEquals(rulesChildNode, overrideChild, targetChild))
+                    if (isOverridable && rulesChildNode.IsAttributeIdsEquals(overrideChild, targetChild))
                     {
-                        Override(target, rulesChildNode, overrideChild, targetChild);
+                        if (isOverrideInnerXml)
+                        {
+                            target.ReplaceChildren(overrideChild, targetChild);
+                            _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(overrideChild, rulesChildNode));
+                        }
+                        else
+                        {
+                            OverrideAttributes(rulesChildNode, overrideChild, targetChild);
+                        }
+
                         continue;
                     }
 
@@ -86,52 +98,19 @@ internal sealed class Overriding<T>
         }
     }
 
-    private void Override(
-        XmlNode target,
-        XmlElement rulesChildNode,
-        XmlElement overrideChild,
-        XmlElement targetChild
-    )
-    {
-        if (rulesChildNode.IsOverrideInnerXml())
-        {
-            ReplaceChildren(overrideChild, target, targetChild);
-            _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(overrideChild, rulesChildNode));
-            return;
-        }
-
-        OverrideAttributes(rulesChildNode, overrideChild, targetChild);
-    }
-
-    private static void ReplaceChildren(
-        XmlElement overrideChild,
-        XmlNode target,
-        XmlElement targetChild
-    )
-    {
-        if (target.OwnerDocument is null)
-        {
-            return;
-        }
-
-        XmlNode newNode = target.OwnerDocument.ImportNode(overrideChild, true);
-        target.ReplaceChild(newNode, targetChild);
-    }
-
     private void OverrideAttributes(
         XmlElement rulesChildNode,
         XmlElement overrideChild,
         XmlElement targetChild
     )
     {
-        foreach (string? rulesAttrName in RulesAttributeNames(rulesChildNode))
+        var hashSet = new HashSet<string>(rulesChildNode.RulesAttributeNames());
+
+        foreach (XmlAttribute overrideAttribute in overrideChild.Attributes)
         {
-            foreach (XmlAttribute overrideAttribute in overrideChild.Attributes)
+            if (hashSet.Contains(overrideAttribute.LocalName))
             {
-                if (rulesAttrName == overrideAttribute.LocalName)
-                {
-                    OverrideAttribute(rulesChildNode, overrideChild, overrideAttribute, targetChild);
-                }
+                OverrideAttribute(rulesChildNode, overrideChild, overrideAttribute, targetChild);
             }
         }
     }
@@ -158,52 +137,5 @@ internal sealed class Overriding<T>
             _logger.LogInformation("Attributes on the element: {0}", LogHelper.Message(overrideChild, rulesChildNode));
             targetAttribute.Value = overrideAttribute.Value;
         }
-    }
-
-    private static IEnumerable<string> RulesAttributeNames(XmlNode rules)
-    {
-        return rules
-            .ChildNodes
-            .OfType<XmlElement>()
-            .Where(it => it.IsAttributeElement())
-            .Select(it => it.GetElementName());
-    }
-
-    private static bool IsElementNamesEquals(string name, XmlNode @override, XmlNode target)
-    {
-        return IsElementFound(@override, name) && IsElementFound(target, name);
-    }
-
-    private static bool IsElementFound(XmlNode element, string name)
-    {
-        return element.NodeType == XmlNodeType.Element && element.LocalName == name;
-    }
-
-    private static bool IsAttributeIdsEquals(
-        XmlElement rules,
-        XmlElement @override,
-        XmlElement target
-    )
-    {
-        if (!rules.HasAttributeIdName() || !@override.HasAttributes)
-        {
-            return false;
-        }
-
-        string key = rules.GetAttributeIdName();
-        if (!@override.HasAttribute(key))
-        {
-            return false;
-        }
-
-        string targetValue = target.GetAttribute(key);
-        bool isValueEquals = @override.GetAttribute(key) == targetValue;
-
-        if (rules.HasAttributeIdValue())
-        {
-            return isValueEquals && targetValue == rules.GetAttributeIdValue();
-        }
-
-        return isValueEquals;
     }
 }
