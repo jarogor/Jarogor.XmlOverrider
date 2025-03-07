@@ -15,7 +15,7 @@ internal static class XmlExtensions
         XmlElement targetChild
     )
     {
-        var hashSet = new HashSet<string>(rulesChildNode.RulesAttributeNames());
+        HashSet<string> hashSet = new(rulesChildNode.RulesAttributeNames());
 
         foreach (XmlAttribute overrideAttribute in overrideChild.Attributes)
         {

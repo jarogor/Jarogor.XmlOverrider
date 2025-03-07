@@ -2,8 +2,6 @@ using System.Xml;
 
 using Jarogor.XmlOverrider.Scheme;
 
-using Microsoft.Extensions.Logging;
-
 namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
