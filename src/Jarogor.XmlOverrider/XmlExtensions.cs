@@ -9,7 +9,40 @@ namespace Jarogor.XmlOverrider;
 
 internal static class XmlExtensions
 {
-    public static IEnumerable<string> RulesAttributeNames(this XmlNode rules)
+    public static void OverrideAttributes(
+        this XmlElement rulesChildNode,
+        XmlElement overrideChild,
+        XmlElement targetChild
+    )
+    {
+        var hashSet = new HashSet<string>(rulesChildNode.RulesAttributeNames());
+
+        foreach (XmlAttribute overrideAttribute in overrideChild.Attributes)
+        {
+            if (!hashSet.Contains(overrideAttribute.LocalName))
+            {
+                continue;
+            }
+
+            foreach (XmlAttribute targetAttribute in targetChild.Attributes)
+            {
+                if (targetAttribute.LocalName != overrideAttribute.LocalName)
+                {
+                    continue;
+                }
+
+                if (targetAttribute.Value == overrideAttribute.Value)
+                {
+                    continue;
+                }
+
+                Logger.XmlInformation("Attributes on the element", overrideChild, rulesChildNode);
+                targetAttribute.Value = overrideAttribute.Value;
+            }
+        }
+    }
+
+    private static IEnumerable<string> RulesAttributeNames(this XmlNode rules)
     {
         return rules
             .ChildXmlElement(it => it.IsAttributeElement())

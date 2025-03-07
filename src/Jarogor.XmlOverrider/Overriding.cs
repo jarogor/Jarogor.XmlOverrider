@@ -26,7 +26,7 @@ internal sealed class Overriding
         ProcessingRecursive(_rules, _override, _target);
     }
 
-    private void ProcessingRecursive(
+    private static void ProcessingRecursive(
         XmlNode rules,
         XmlNode @override,
         XmlNode target
@@ -39,6 +39,7 @@ internal sealed class Overriding
 
         List<XmlElement> rulesChildNodes = rules
             .ChildXmlElement(it => @override[it.GetElementName()] is not null)
+            .Where(it => it.IsElementType())
             .ToList();
 
         List<XmlElement> overrideChildren = @override
@@ -51,12 +52,9 @@ internal sealed class Overriding
 
         foreach (XmlElement? rulesChildNode in rulesChildNodes)
         {
-            bool isElementType = rulesChildNode.IsElementType();
             string name = rulesChildNode.GetElementName();
-            if (!isElementType)
-            {
-                continue;
-            }
+            bool isOverridable = rulesChildNode.IsOverridable();
+            bool isOverrideInnerXml = rulesChildNode.IsOverrideInnerXml();
 
             foreach (XmlElement? overrideChild in overrideChildren)
             {
@@ -64,22 +62,11 @@ internal sealed class Overriding
                     .Where(it => it.IsElementFound(name))
                     .Where(_ => overrideChild.IsElementFound(name));
 
-                bool isOverridable = rulesChildNode.IsOverridable();
-                bool isOverrideInnerXml = rulesChildNode.IsOverrideInnerXml();
                 foreach (XmlElement? targetChild in targets)
                 {
                     if (isOverridable && rulesChildNode.IsAttributeIdsEquals(overrideChild, targetChild))
                     {
-                        if (isOverrideInnerXml)
-                        {
-                            target.ReplaceChildren(overrideChild, targetChild);
-                            Logger.XmlInformation("Inner xml of element", overrideChild, rulesChildNode);
-                        }
-                        else
-                        {
-                            OverrideAttributes(rulesChildNode, overrideChild, targetChild);
-                        }
-
+                        Override(isOverrideInnerXml, target, overrideChild, targetChild, rulesChildNode);
                         continue;
                     }
 
@@ -89,44 +76,16 @@ internal sealed class Overriding
         }
     }
 
-    private void OverrideAttributes(
-        XmlElement rulesChildNode,
-        XmlElement overrideChild,
-        XmlElement targetChild
-    )
+    private static void Override(bool isOverrideInnerXml, XmlNode target, XmlElement overrideChild, XmlElement targetChild, XmlElement rulesChildNode)
     {
-        var hashSet = new HashSet<string>(rulesChildNode.RulesAttributeNames());
-
-        foreach (XmlAttribute overrideAttribute in overrideChild.Attributes)
+        if (isOverrideInnerXml)
         {
-            if (hashSet.Contains(overrideAttribute.LocalName))
-            {
-                OverrideAttribute(rulesChildNode, overrideChild, overrideAttribute, targetChild);
-            }
+            target.ReplaceChildren(overrideChild, targetChild);
+            Logger.XmlInformation("Inner xml of element", overrideChild, rulesChildNode);
         }
-    }
-
-    private void OverrideAttribute(
-        XmlElement rulesChildNode,
-        XmlElement overrideChild,
-        XmlAttribute overrideAttribute,
-        XmlElement targetChild
-    )
-    {
-        foreach (XmlAttribute targetAttribute in targetChild.Attributes)
+        else
         {
-            if (targetAttribute.LocalName != overrideAttribute.LocalName)
-            {
-                continue;
-            }
-
-            if (targetAttribute.Value == overrideAttribute.Value)
-            {
-                continue;
-            }
-
-            Logger.XmlInformation("Attributes on the element", overrideChild, rulesChildNode);
-            targetAttribute.Value = overrideAttribute.Value;
+            rulesChildNode.OverrideAttributes(overrideChild, targetChild);
         }
     }
 }
