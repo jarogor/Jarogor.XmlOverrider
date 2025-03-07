@@ -2,14 +2,22 @@
 
 using Jarogor.XmlOverrider.Extensions;
 
+using Microsoft.Extensions.Logging;
+
 namespace Jarogor.XmlOverrider;
 
-internal static class LogHelper
+internal static class Logger
 {
-    public static string Message(XmlElement element, XmlElement rules)
-    {
-        string? key = rules.GetAttributeIdName();
+    public static ILogger? Log { get; set; }
 
+    public static void XmlInformation(string? message, XmlElement element, XmlElement rules)
+    {
+        Log?.LogInformation("{Name}: {0}", message, Message(element, rules));
+    }
+
+    private static string Message(XmlElement element, XmlElement rules)
+    {
+        string key = rules.GetAttributeIdName();
         return $"{XPath(element)}[@{key}='{element.GetAttribute(key)}']";
     }
 

@@ -18,8 +18,9 @@ public class XmlDocumentOverrider : XmlDocumentOverriderBase<XmlDocumentOverride
 
     /// <inheritdoc />
     public XmlDocumentOverrider(Rules rules, XmlDocument xml, ILogger<XmlDocumentOverrider>? logger = null)
-        : base(rules, logger ?? new NullLogger<XmlDocumentOverrider>())
+        : base(rules)
     {
+        Logger.Log = logger ?? NullLogger<XmlDocumentOverrider>.Instance;
         TargetXml = xml;
     }
 
@@ -47,7 +48,7 @@ public class XmlDocumentOverrider : XmlDocumentOverriderBase<XmlDocumentOverride
     {
         for (int index = 0; index < _overridingXmlDocuments.Count; index++)
         {
-            Logger.LogDebug("Processing {0}", index);
+            Logger.Log?.LogDebug("Processing {0}", index);
             Processing(_overridingXmlDocuments[index]);
         }
 

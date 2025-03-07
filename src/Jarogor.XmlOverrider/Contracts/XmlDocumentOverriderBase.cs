@@ -13,7 +13,7 @@ namespace Jarogor.XmlOverrider.Contracts;
 public abstract class XmlDocumentOverriderBase<T> : OverriderBase<T>, IXmlDocumentOverrider<T>
 {
     /// <inheritdoc />
-    protected XmlDocumentOverriderBase(Rules rules, ILogger<T> logger) : base(rules, logger) { }
+    protected XmlDocumentOverriderBase(Rules rules) : base(rules) { }
 
     /// <inheritdoc />
     public abstract T AddOverride(XmlDocument overridingXmlDocument);

@@ -14,8 +14,9 @@ public sealed class StringOverrider : XmlDocumentOverrider
 {
     /// <inheritdoc />
     public StringOverrider(Rules rules, string xml, ILogger<StringOverrider>? logger = null)
-        : base(rules, XmlToDocument(xml), logger ?? new NullLogger<StringOverrider>())
+        : base(rules, XmlToDocument(xml))
     {
+        Logger.Log = logger ?? NullLogger<StringOverrider>.Instance;
     }
 
     private static XmlDocument XmlToDocument(string xml)

@@ -18,17 +18,10 @@ public abstract class OverriderBase<T>
     ///     Constructor for streams
     /// </summary>
     /// <param name="rules">Overriding rules</param>
-    /// <param name="logger">Microsoft.Extensions.Logging.ILogger implementation</param>
-    protected OverriderBase(Rules rules, ILogger<T> logger)
+    protected OverriderBase(Rules rules)
     {
         _rules = rules;
-        Logger = logger;
     }
-
-    /// <summary>
-    ///     Logger
-    /// </summary>
-    protected ILogger<T> Logger { get; }
 
     /// <summary>
     ///     XML to override
@@ -47,7 +40,7 @@ public abstract class OverriderBase<T>
     /// <param name="overridingXmlDocument">overriding xml</param>
     protected void Processing(XmlDocument overridingXmlDocument)
     {
-        new Overriding<T>(_rules, overridingXmlDocument, TargetXml, Logger).Processing();
+        new Overriding(_rules, overridingXmlDocument, TargetXml).Processing();
     }
 
     /// <summary>

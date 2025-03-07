@@ -6,28 +6,19 @@ using System.Xml;
 using Jarogor.XmlOverrider.Extensions;
 using Jarogor.XmlOverrider.Scheme;
 
-using Microsoft.Extensions.Logging;
-
 namespace Jarogor.XmlOverrider;
 
-internal sealed class Overriding<T>
+internal sealed class Overriding
 {
-    private readonly ILogger<T> _logger;
     private readonly XmlElement _override;
     private readonly XmlElement _rules;
     private readonly XmlElement _target;
 
-    public Overriding(
-        Rules rules,
-        XmlDocument @override,
-        XmlDocument target,
-        ILogger<T> logger
-    )
+    public Overriding(Rules rules, XmlDocument @override, XmlDocument target)
     {
         _rules = rules.XmlDocument.DocumentElement ?? throw new InvalidOperationException("rules xml");
         _override = @override.DocumentElement ?? throw new InvalidOperationException("override xml");
         _target = target.DocumentElement ?? throw new InvalidOperationException("target xml");
-        _logger = logger;
     }
 
     public void Processing()
@@ -82,7 +73,7 @@ internal sealed class Overriding<T>
                         if (isOverrideInnerXml)
                         {
                             target.ReplaceChildren(overrideChild, targetChild);
-                            _logger.LogInformation("Inner xml of element: {0}", LogHelper.Message(overrideChild, rulesChildNode));
+                            Logger.XmlInformation("Inner xml of element", overrideChild, rulesChildNode);
                         }
                         else
                         {
@@ -134,7 +125,7 @@ internal sealed class Overriding<T>
                 continue;
             }
 
-            _logger.LogInformation("Attributes on the element: {0}", LogHelper.Message(overrideChild, rulesChildNode));
+            Logger.XmlInformation("Attributes on the element", overrideChild, rulesChildNode);
             targetAttribute.Value = overrideAttribute.Value;
         }
     }
