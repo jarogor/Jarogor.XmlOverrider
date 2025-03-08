@@ -2,7 +2,6 @@
 using System.Xml;
 
 using Jarogor.XmlOverrider.Contracts;
-using Jarogor.XmlOverrider.Scheme;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -17,7 +16,7 @@ public class XmlDocumentOverrider : XmlDocumentOverriderBase<XmlDocumentOverride
     private readonly List<XmlDocument> _overridingXmlDocuments = new();
 
     /// <inheritdoc />
-    public XmlDocumentOverrider(Rules rules, XmlDocument xml, ILogger<XmlDocumentOverrider>? logger = null)
+    public XmlDocumentOverrider(OverrideRules[] rules, XmlDocument xml, ILogger<XmlDocumentOverrider>? logger = null)
         : base(rules)
     {
         Logger.Log = logger ?? NullLogger<XmlDocumentOverrider>.Instance;
@@ -37,7 +36,7 @@ public class XmlDocumentOverrider : XmlDocumentOverriderBase<XmlDocumentOverride
     /// <inheritdoc />
     public override XmlDocumentOverrider AddOverride(string overridingXml)
     {
-        XmlDocument? xmlDocument = new();
+        XmlDocument xmlDocument = new();
         xmlDocument.LoadXml(overridingXml);
         _overridingXmlDocuments.Add(xmlDocument);
         return this;

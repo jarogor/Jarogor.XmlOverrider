@@ -8,7 +8,7 @@ AMD Ryzen 5 3600, 1 CPU, 12 logical and 6 physical cores
   DefaultJob : .NET 8.0.13 (8.0.1325.6609), X64 RyuJIT AVX2
 
 
-| Method    | Mean     | Error   | StdDev  | Gen0    | Completed Work Items | Lock Contentions | Exceptions | Gen1   | Allocated |
-|---------- |---------:|--------:|--------:|--------:|---------------------:|-----------------:|-----------:|-------:|----------:|
-| Benchmark | 226.8 us | 4.38 us | 6.69 us | 24.4141 |                    - |                - |          - | 1.9531 | 200.39 KB |
+| Method    | Mean     | Error    | StdDev   | Gen0   | Completed Work Items | Lock Contentions | Exceptions | Gen1   | Allocated |
+|---------- |---------:|---------:|---------:|-------:|---------------------:|-----------------:|-----------:|-------:|----------:|
+| Benchmark | 41.01 us | 0.803 us | 1.072 us | 9.7656 |                    - |                - |          - | 0.7324 |  81.74 KB |
 ```

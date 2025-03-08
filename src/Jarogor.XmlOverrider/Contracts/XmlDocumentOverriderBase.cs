@@ -1,7 +1,5 @@
 ﻿using System.Xml;
 
-using Jarogor.XmlOverrider.Scheme;
-
 namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
@@ -11,7 +9,7 @@ namespace Jarogor.XmlOverrider.Contracts;
 public abstract class XmlDocumentOverriderBase<T> : OverriderBase<T>, IXmlDocumentOverrider<T>
 {
     /// <inheritdoc />
-    protected XmlDocumentOverriderBase(Rules rules) : base(rules) { }
+    protected XmlDocumentOverriderBase(OverrideRules[] rules) : base(rules) { }
 
     /// <inheritdoc />
     public abstract T AddOverride(XmlDocument overridingXmlDocument);

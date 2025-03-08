@@ -1,7 +1,5 @@
 using System.Xml;
 
-using Jarogor.XmlOverrider.Scheme;
-
 namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
@@ -10,13 +8,13 @@ namespace Jarogor.XmlOverrider.Contracts;
 /// <typeparam name="T">Type of overrider</typeparam>
 public abstract class OverriderBase<T>
 {
-    private readonly Rules _rules;
+    private readonly OverrideRules[] _rules;
 
     /// <summary>
     ///     Constructor for streams
     /// </summary>
     /// <param name="rules">Overriding rules</param>
-    protected OverriderBase(Rules rules)
+    protected OverriderBase(OverrideRules[] rules)
     {
         _rules = rules;
     }

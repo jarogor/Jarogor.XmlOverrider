@@ -1,37 +1,35 @@
-﻿using System.Runtime.CompilerServices;
-using System.Xml;
+﻿using System.Xml;
 
 using BenchmarkDotNet.Attributes;
 
 using Jarogor.XmlOverrider.Overrider;
-using Jarogor.XmlOverrider.Scheme;
 
 namespace Jarogor.XmlOverrider.Benchmarks;
 
 [MemoryDiagnoser]
 [ThreadingDiagnoser]
 [ExceptionDiagnoser]
-public class StringOverriderInnerXmlByKeyAndValue
+public class StringOverriderBenchmark
 {
-    private const string RulesXsd = @"..\..\src\Jarogor.XmlOverrider\Scheme\Rules.xsd";
-
-    private const string RulesXml =
-        """
-        <?xml version="1.0" encoding="utf-8"?>
-        <overrideRules>
-            <node name="section-a">
-                <node name="item" attributeIdName="key" attributeIdValue="b" override="innerXml"/>
-            </node>
-            <node name="section-b">
-                <node name="item" attributeIdName="key" override="innerXml"/>
-            </node>
-            <node name="section-c">
-                <node name="item" attributeIdName="key" override="attributes">
-                    <attribute name="value"/>
-                </node>
-            </node>
-        </overrideRules>
-        """;
+    private static readonly OverrideRules[] Rules =
+    [
+        new()
+        {
+            XPath = "//section-a/item[@key='b']",
+            OverrideType = OverrideType.InnerXml,
+        },
+        new()
+        {
+            XPath = "//section-b/item[@key]",
+            OverrideType = OverrideType.InnerXml,
+        },
+        new()
+        {
+            XPath = "//section-c/item[@key]",
+            OverrideType = OverrideType.Attributes,
+            Attributes = new[] { "value" },
+        },
+    ];
 
     private const string SourceXml =
         """
@@ -88,25 +86,16 @@ public class StringOverriderInnerXmlByKeyAndValue
         </root>
         """;
 
-    private static string BasePath([CallerFilePath] string path = "")
-    {
-        return path;
-    }
-
     [Benchmark]
     public void Benchmark()
     {
-        string? basePath = Path.GetDirectoryName(BasePath());
-        FileStream? fileStream = File.OpenRead(Path.Combine(basePath ?? ".", RulesXsd));
-        Rules? rules = new(new StringReader(RulesXml), new StreamReader(fileStream));
-
-        XmlDocument? target = new();
+        XmlDocument target = new();
         target.LoadXml(SourceXml);
 
-        XmlDocument? overridingXmlDocument = new();
+        XmlDocument overridingXmlDocument = new();
         overridingXmlDocument.LoadXml(OverridingXml);
 
-        StringOverrider? overrider = new(rules, target.OuterXml);
+        StringOverrider overrider = new(Rules, target.OuterXml);
         overrider.AddOverride(overridingXmlDocument);
 
         overrider.Processing().Get();

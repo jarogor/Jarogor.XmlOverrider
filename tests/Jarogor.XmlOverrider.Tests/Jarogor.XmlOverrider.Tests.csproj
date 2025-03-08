@@ -35,20 +35,4 @@
         <ProjectReference Include="..\..\src\Jarogor.XmlOverrider\Jarogor.XmlOverrider.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Content CopyToOutputDirectory="Always" Include=".\data\rules.test.xml"/>
-        <Content CopyToOutputDirectory="Always" Include=".\data\test.xml"/>
-        <Content CopyToOutputDirectory="Always" Include=".\data\override-a.xml"/>
-        <Content CopyToOutputDirectory="Always" Include=".\data\override-b.xml"/>
-        <Content CopyToOutputDirectory="Always" Include=".\data\override-c.xml"/>
-        <Content CopyToOutputDirectory="Always" Include=".\data\expected.xml"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Include="..\..\src\Jarogor.XmlOverrider\Scheme\Rules.xsd">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Link>data\Rules.xsd</Link>
-        </EmbeddedResource>
-    </ItemGroup>
-
 </Project>
