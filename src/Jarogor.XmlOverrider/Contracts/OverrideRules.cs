@@ -1,22 +1,22 @@
 ﻿namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
-/// Rules
+///     Rules
 /// </summary>
 public sealed class OverrideRules
 {
     /// <summary>
-    /// Xpath for search
+    ///     Xpath for search
     /// </summary>
     public string XPath { get; set; }
 
     /// <summary>
-    /// Override type
+    ///     Override type
     /// </summary>
     public OverrideType OverrideType { get; set; }
 
     /// <summary>
-    /// Array of attributes names
+    ///     Array of attributes names
     /// </summary>
     public string[] Attributes { get; set; }
 }

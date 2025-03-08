@@ -12,26 +12,6 @@ namespace Jarogor.XmlOverrider.Benchmarks;
 [ExceptionDiagnoser]
 public class StringOverriderBenchmark
 {
-    private static readonly OverrideRules[] Rules =
-    [
-        new()
-        {
-            XPath = "//section-a/item[@key='b']",
-            OverrideType = OverrideType.InnerXml,
-        },
-        new()
-        {
-            XPath = "//section-b/item[@key]",
-            OverrideType = OverrideType.InnerXml,
-        },
-        new()
-        {
-            XPath = "//section-c/item[@key]",
-            OverrideType = OverrideType.Attributes,
-            Attributes = new[] { "value" },
-        },
-    ];
-
     private const string SourceXml =
         """
         <?xml version="1.0" encoding="utf-8"?>
@@ -86,6 +66,26 @@ public class StringOverriderBenchmark
             </section-c>
         </root>
         """;
+
+    private static readonly OverrideRules[] Rules =
+    [
+        new()
+        {
+            XPath = "//section-a/item[@key='b']",
+            OverrideType = OverrideType.InnerXml,
+        },
+        new()
+        {
+            XPath = "//section-b/item[@key]",
+            OverrideType = OverrideType.InnerXml,
+        },
+        new()
+        {
+            XPath = "//section-c/item[@key]",
+            OverrideType = OverrideType.Attributes,
+            Attributes = new[] { "value" },
+        },
+    ];
 
     [Benchmark]
     public void Benchmark()

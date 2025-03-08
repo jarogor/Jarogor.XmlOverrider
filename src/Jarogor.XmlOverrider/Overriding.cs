@@ -7,9 +7,9 @@ namespace Jarogor.XmlOverrider;
 
 internal sealed class Overriding
 {
-    private readonly XmlElement _target;
-    private readonly OverrideRules[] _rules;
     private readonly XmlElement _overrides;
+    private readonly OverrideRules[] _rules;
+    private readonly XmlElement _target;
 
     public Overriding(OverrideRules[] rules, XmlDocument overrides, XmlDocument target)
     {
@@ -22,13 +22,13 @@ internal sealed class Overriding
     {
         foreach (OverrideRules rules in _rules)
         {
-            var targetFounds = _target.SelectNodes(rules.XPath);
+            XmlNodeList? targetFounds = _target.SelectNodes(rules.XPath);
             if (targetFounds is null)
             {
                 continue;
             }
 
-            var overridesFounds = _overrides.SelectNodes(rules.XPath);
+            XmlNodeList? overridesFounds = _overrides.SelectNodes(rules.XPath);
             if (overridesFounds is null)
             {
                 continue;

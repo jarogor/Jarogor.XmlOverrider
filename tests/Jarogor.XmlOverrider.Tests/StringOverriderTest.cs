@@ -103,7 +103,7 @@ public class StringOverriderTest
         XmlDocument expected = new();
         expected.LoadXml(ExpectedXml);
 
-        var overrider = new StringOverrider(Rules, target.OuterXml);
+        StringOverrider? overrider = new(Rules, target.OuterXml);
         XmlDocument overridingA = new();
         overridingA.LoadXml(OverridingXmlA);
         overrider.AddOverride(overridingA);

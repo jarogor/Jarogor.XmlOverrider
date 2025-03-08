@@ -16,13 +16,13 @@ internal static class OverrideRulesExtensions
             return;
         }
 
-        var match = Regex.Match(setting.XPath);
+        Match match = Regex.Match(setting.XPath);
         if (!match.Success)
         {
             return;
         }
 
-        var key = match.Groups["attributeName"].Value;
+        string key = match.Groups["attributeName"].Value;
         if (targetNode.Attributes[key] is null || overrideNode.Attributes[key] is null)
         {
             return;

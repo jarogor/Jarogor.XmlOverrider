@@ -1,22 +1,22 @@
 ﻿namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
-/// Override type
+///     Override type
 /// </summary>
 public enum OverrideType
 {
     /// <summary>
-    /// Override inner text
+    ///     Override inner text
     /// </summary>
     InnerText,
 
     /// <summary>
-    /// Override inner XML
+    ///     Override inner XML
     /// </summary>
     InnerXml,
 
     /// <summary>
-    /// Override attributes by names
+    ///     Override attributes by names
     /// </summary>
     Attributes,
 }
