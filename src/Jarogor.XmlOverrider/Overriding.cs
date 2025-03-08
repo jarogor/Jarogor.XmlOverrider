@@ -1,6 +1,8 @@
 using System;
 using System.Xml;
 
+using Jarogor.XmlOverrider.Contracts;
+
 namespace Jarogor.XmlOverrider;
 
 internal sealed class Overriding

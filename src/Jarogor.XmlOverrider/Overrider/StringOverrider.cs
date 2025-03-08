@@ -1,5 +1,7 @@
 ﻿using System.Xml;
 
+using Jarogor.XmlOverrider.Contracts;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 

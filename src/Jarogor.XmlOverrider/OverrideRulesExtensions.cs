@@ -1,6 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml;
 
+using Jarogor.XmlOverrider.Contracts;
+
 namespace Jarogor.XmlOverrider;
 
 internal static class OverrideRulesExtensions

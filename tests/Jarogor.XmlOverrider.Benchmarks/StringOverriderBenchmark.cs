@@ -2,6 +2,7 @@
 
 using BenchmarkDotNet.Attributes;
 
+using Jarogor.XmlOverrider.Contracts;
 using Jarogor.XmlOverrider.Overrider;
 
 namespace Jarogor.XmlOverrider.Benchmarks;

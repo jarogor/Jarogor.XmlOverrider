@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 
+using Jarogor.XmlOverrider.Contracts;
 using Jarogor.XmlOverrider.Overrider;
 
 using NUnit.Framework;
