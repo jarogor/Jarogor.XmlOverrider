@@ -22,13 +22,13 @@ internal sealed class Overriding
     {
         foreach (OverrideRules rules in _rules)
         {
-            XmlNodeList? targetFounds = _target.SelectNodes(rules.XPath);
+            XmlNodeList? targetFounds = _target.SelectNodes(rules.XPath.Expression);
             if (targetFounds is null)
             {
                 continue;
             }
 
-            XmlNodeList? overridesFounds = _overrides.SelectNodes(rules.XPath);
+            XmlNodeList? overridesFounds = _overrides.SelectNodes(rules.XPath.Expression);
             if (overridesFounds is null)
             {
                 continue;

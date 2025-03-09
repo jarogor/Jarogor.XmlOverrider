@@ -71,19 +71,19 @@ public class StringOverriderBenchmark
     [
         new()
         {
-            XPath = "//section-a/item[@key='b']",
+            XPath = new XPath("//section-a/item[@key='b']"),
             OverrideType = OverrideType.InnerXml,
         },
         new()
         {
-            XPath = "//section-b/item[@key]",
+            XPath = new XPath("//section-b/item[@key]"),
             OverrideType = OverrideType.InnerXml,
         },
         new()
         {
-            XPath = "//section-c/item[@key]",
+            XPath = new XPath("//section-c/item[@key]"),
             OverrideType = OverrideType.Attributes,
-            Attributes = new[] { "value" },
+            Attributes = ["value"],
         },
     ];
 

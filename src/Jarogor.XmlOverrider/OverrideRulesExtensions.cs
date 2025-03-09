@@ -16,7 +16,7 @@ internal static class OverrideRulesExtensions
             return;
         }
 
-        Match match = Regex.Match(setting.XPath);
+        Match match = Regex.Match(setting.XPath.Expression);
         if (!match.Success)
         {
             return;

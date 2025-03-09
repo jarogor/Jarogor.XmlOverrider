@@ -1,4 +1,6 @@
-﻿namespace Jarogor.XmlOverrider.Contracts;
+﻿using System.Collections.Generic;
+
+namespace Jarogor.XmlOverrider.Contracts;
 
 /// <summary>
 ///     Rules
@@ -8,7 +10,7 @@ public sealed class OverrideRules
     /// <summary>
     ///     Xpath for search
     /// </summary>
-    public string XPath { get; set; }
+    public XPath XPath { get; set; }
 
     /// <summary>
     ///     Override type
@@ -18,5 +20,5 @@ public sealed class OverrideRules
     /// <summary>
     ///     Array of attributes names
     /// </summary>
-    public string[] Attributes { get; set; }
+    public IEnumerable<string> Attributes { get; set; } = [];
 }
