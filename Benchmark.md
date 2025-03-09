@@ -10,5 +10,5 @@ AMD Ryzen 5 3600, 1 CPU, 12 logical and 6 physical cores
 
 | Method    | Mean     | Error    | StdDev   | Gen0   | Completed Work Items | Lock Contentions | Exceptions | Gen1   | Allocated |
 |---------- |---------:|---------:|---------:|-------:|---------------------:|-----------------:|-----------:|-------:|----------:|
-| Benchmark | 41.01 us | 0.803 us | 1.072 us | 9.7656 |                    - |                - |          - | 0.7324 |  81.74 KB |
+| Benchmark | 42.77 us | 0.824 us | 1.127 us | 9.2773 |                    - |                - |          - | 0.4883 |  77.54 KB |
 ```
