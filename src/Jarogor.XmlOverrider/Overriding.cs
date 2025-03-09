@@ -46,10 +46,21 @@ internal sealed class Overriding
 
     private static void Handle(OverrideRules rules, XmlNode targetNode, XmlNode overrideNode)
     {
+        if (!rules.IsEquals(targetNode, overrideNode))
+        {
+            return;
+        }
+
         switch (rules.OverrideType)
         {
             case OverrideType.Attributes:
-                rules.OverrideAttributes(targetNode, overrideNode);
+                foreach (string name in rules.Attributes)
+                {
+                    if (targetNode.Attributes?[name] is not null && overrideNode.Attributes?[name] is not null)
+                    {
+                        targetNode.Attributes[name]!.Value = overrideNode.Attributes[name]!.Value;
+                    }
+                }
                 break;
 
             case OverrideType.InnerXml:

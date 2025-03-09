@@ -86,7 +86,7 @@ public class StringOverriderTest
                 <item key="b"><new name="new"/></item>
             </section-a>
             <section-b>
-                <item key="a"><new name="new2"/></item>
+                <item key="a"><new name="new1"/></item>
                 <item key="b"><new name="new2"/></item>
             </section-b>
             <section-c><item key="a" value="new"/></section-c>
