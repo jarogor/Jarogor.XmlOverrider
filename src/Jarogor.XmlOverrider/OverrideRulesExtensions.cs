@@ -9,25 +9,25 @@ internal static class OverrideRulesExtensions
 {
     private static readonly Regex Regex = new(@"@(?<attributeName>\w+)\b[^=]?", RegexOptions.Compiled);
 
-    public static bool IsEquals(this OverrideRules setting, XmlNode targetNode, XmlNode overrideNode)
+    public static bool IsEquals(this OverrideRules rules, XmlNode a, XmlNode b)
     {
-        if (targetNode.Attributes is null || overrideNode.Attributes is null)
+        if (a.Attributes is null || b.Attributes is null)
         {
             return false;
         }
 
-        Match match = Regex.Match(setting.XPath.Expression);
+        Match match = Regex.Match(rules.XPath.Expression);
         if (!match.Success)
         {
             return false;
         }
 
         string key = match.Groups["attributeName"].Value;
-        if (targetNode.Attributes[key] is null || overrideNode.Attributes[key] is null)
+        if (a.Attributes[key] is null || b.Attributes[key] is null)
         {
             return false;
         }
 
-        return targetNode.Attributes[key]?.Value == overrideNode.Attributes[key]?.Value;
+        return a.Attributes[key]?.Value == b.Attributes[key]?.Value;
     }
 }
