@@ -11,7 +11,7 @@ namespace Jarogor.XmlOverrider.Tests;
 public class StringOverriderTest
 {
     private static readonly OverrideRules[] Rules =
-    {
+    [
         new()
         {
             XPath = new XPath("//section-a/item[@key='b']"),
@@ -28,7 +28,7 @@ public class StringOverriderTest
             OverrideType = OverrideType.Attributes,
             Attributes = ["value"],
         },
-    };
+    ];
 
     private const string SourceXml =
         """
@@ -103,7 +103,8 @@ public class StringOverriderTest
         XmlDocument expected = new();
         expected.LoadXml(ExpectedXml);
 
-        StringOverrider? overrider = new(Rules, target.OuterXml);
+        StringOverrider overrider = new(Rules, target.OuterXml);
+
         XmlDocument overridingA = new();
         overridingA.LoadXml(OverridingXmlA);
         overrider.AddOverride(overridingA);

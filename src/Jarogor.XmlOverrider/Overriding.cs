@@ -5,30 +5,23 @@ using Jarogor.XmlOverrider.Contracts;
 
 namespace Jarogor.XmlOverrider;
 
-internal sealed class Overriding
+internal sealed class Overriding(OverrideRules[] rules, XmlDocument overrides, XmlDocument target)
 {
-    private readonly XmlElement _overrides;
-    private readonly OverrideRules[] _rules;
-    private readonly XmlElement _target;
-
-    public Overriding(OverrideRules[] rules, XmlDocument overrides, XmlDocument target)
-    {
-        _rules = rules ?? throw new InvalidOperationException("rules");
-        _target = target.DocumentElement ?? throw new InvalidOperationException("target");
-        _overrides = overrides.DocumentElement ?? throw new InvalidOperationException("overrides");
-    }
+    private readonly XmlElement _overrides = overrides.DocumentElement ?? throw new ArgumentNullException(nameof(overrides));
+    private readonly OverrideRules[] _rules = rules ?? throw new ArgumentNullException(nameof(rules));
+    private readonly XmlElement _target = target.DocumentElement ?? throw new ArgumentNullException(nameof(target));
 
     public void Processing()
     {
-        foreach (OverrideRules rules in _rules)
+        foreach (OverrideRules overrideRules in _rules)
         {
-            XmlNodeList? targetFounds = _target.SelectNodes(rules.XPath.Expression);
+            XmlNodeList? targetFounds = _target.SelectNodes(overrideRules.XPath.Expression);
             if (targetFounds is null)
             {
                 continue;
             }
 
-            XmlNodeList? overridesFounds = _overrides.SelectNodes(rules.XPath.Expression);
+            XmlNodeList? overridesFounds = _overrides.SelectNodes(overrideRules.XPath.Expression);
             if (overridesFounds is null)
             {
                 continue;
@@ -38,7 +31,7 @@ internal sealed class Overriding
             {
                 foreach (XmlNode overrideNode in overridesFounds)
                 {
-                    Handle(rules, targetNode, overrideNode);
+                    Handle(overrideRules, targetNode, overrideNode);
                 }
             }
         }
@@ -61,6 +54,7 @@ internal sealed class Overriding
                         targetNode.Attributes[name]!.Value = overrideNode.Attributes[name]!.Value;
                     }
                 }
+
                 break;
 
             case OverrideType.InnerXml:
